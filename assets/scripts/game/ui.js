@@ -1,24 +1,27 @@
 'use strict'
 const store = require('../store')
+const gamelogic = require('./gamelogic')
 const api = require('./api')
-const events = require('./events')
-function changePlayer () {
-  if (store.currentPlayer === 'o') {
-    store.currentPlayer = 'x'
-  } else if (store.currentPlayer === 'x') {
-    store.currentPlayer = 'o'
-  }
-}
 
 const onSignUpSuccess = (response) => {
-  $('.auth-message').text('Sign up successful')
+  $('.auth-message').text('Sign up successful for ' + response.user.email).addClass('successful')
   $('#sign-up').trigger('reset')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('successful')
+  }, 2000)
 }
 
 const onSignUpFailure = (response) => {
-  console.log(response)
-  $('.auth-message').text('Sign up failed')
+  const resText = JSON.parse(response.responseText)
+  let errMsg = ''
+  for (const key in resText) {
+    errMsg = errMsg + ' ' + key + ' ' + resText[key] + '. '
+  }
+  $('.auth-message').text('Sign up failed: ' + errMsg).addClass('failure')
   $('#sign-up').trigger('reset')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('failure')
+  }, 2000)
 }
 
 const onSignInSuccess = (response) => {
@@ -31,15 +34,23 @@ const onSignInSuccess = (response) => {
   api.createGame()
     .then(onCreateGameSuccess)
     .catch(onCreateGameFailure)
-
-  $('.auth-message').text('Sign in successful')
+  $('.auth-message').text('Sign in successful').addClass('successful')
   $('#sign-in').trigger('reset')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('successful')
+  }, 2000)
 }
 
 const onSignInFailure = (response) => {
-  console.log(response)
-  $('.auth-message').text('Sign in failed')
+  if (response.statusText === 'Unauthorized') {
+    $('.auth-message').text('Sign in failed: Incorrect email or password').addClass('failure')
+  } else {
+    $('.auth-message').text('Sign in failed').addClass('failure')
+  }
   $('#sign-in').trigger('reset')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('failure')
+  }, 2000)
 }
 
 const onSignOutSuccess = (response) => {
@@ -49,66 +60,85 @@ const onSignOutSuccess = (response) => {
   $('#sign-up').show()
   $('#sign-in').show()
 
-  $('.auth-message').text('Sign out successful')
+  $('.auth-message').text('Signed out successfully').addClass('successful')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('successful')
+  }, 2000)
 }
 
 const onSignOutFailure = (response) => {
-  console.log(response)
-  $('.auth-message').text('Sign out failed')
+  $('.auth-message').text('Sign out failed').addClass('failure')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('failure')
+  }, 2000)
 }
 const onChangePasswordSuccess = (response) => {
-  $('.auth-message').text('Change password successful')
+  $('.auth-message').text('Change password successful').addClass('successful')
   $('#change-password').trigger('reset')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('successful')
+  }, 2000)
 }
 
 const onChangePasswordFailure = (response) => {
   console.log(response)
-  $('.auth-message').text('Change password failed')
+  $('.auth-message').text('Change password failed').addClass('failure')
   $('#change-password').trigger('reset')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('failure')
+  }, 2000)
 }
 
 const onCreateGameSuccess = (response) => {
   store.game = response.game
   store.currentPlayer = 'x'
-  $('.game-message').html(`<p>Player ${store.currentPlayer}'s turn</p>`)
-  $('.square').text('').on('click', events.onUpdateGame)
-  // Show a new gameboard
+  $('.game-message').text(`New Game started \nPlayer ${store.currentPlayer}'s turn`)
+  gamelogic.resetGameBoard()
 }
 const onCreateGameFailure = (response) => {
-  console.log(response)
-  $('.auth-message').text('Failed to create game')
+  $('.auth-message').text('Failed to create game').addClass('failure')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('failure')
+  }, 2000)
 }
 
 const onUpdateGameSuccess = (response) => {
   store.game = response.game
-  changePlayer()
+  gamelogic.changePlayer()
   if (!store.game.over) {
     $('.game-message').html(`<p>Player ${store.currentPlayer}'s turn</p>`)
   }
-  console.log(store)
 }
+
 const onUpdateGameFailure = (response) => {
-  console.log(response)
+  $('.auth-message').text('Failed to update game').addClass('failure')
+  setTimeout(() => {
+    $('.auth-message').text('').removeClass('failure')
+  }, 2000)
 }
 
 const onGetGamesSuccess = (response) => {
-  console.log(response)
   $('#games-played').text(response.games.length)
 }
 const onGetGamesFailure = (response) => {
-  console.log(response)
   $('.auth-message').text('Failed to retrieve games played')
 }
 
 const onUpdateSquare = (token, squareId) => {
   store.game.cells[squareId] = token
-  $('#' + squareId).html(`<p>${token}</p>`)
-  $('#' + squareId).off()
+  $('#' + squareId).text(token)
 }
 
 const onGameOver = (winner) => {
-  $('.game-message').text(`${winner} wins`)
-  $('.square').off()
+  if (winner === 'draw') {
+    $('.game-message').text(`Draw`)
+  } else {
+    $('.game-message').text(`${winner} wins`)
+  }
+}
+
+const onInvalidSquare = () => {
+  $('.game-message').text(`Square is already marked, Please choose another square.`)
 }
 
 module.exports = {
@@ -127,5 +157,6 @@ module.exports = {
   onGetGamesSuccess,
   onGetGamesFailure,
   onUpdateSquare,
-  onGameOver
+  onGameOver,
+  onInvalidSquare
 }

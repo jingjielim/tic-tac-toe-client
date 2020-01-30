@@ -64,7 +64,7 @@ const updateGame = (squareId, over) => {
           'index': squareId,
           'value': store.currentPlayer
         },
-        'over': over
+        'over': store.game.over
       }
     }
   })

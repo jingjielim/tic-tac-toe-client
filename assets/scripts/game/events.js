@@ -1,22 +1,10 @@
 'use strict'
+
 const getFormFields = require('../../../lib/get-form-fields')
 const store = require('../store')
 const api = require('./api')
 const ui = require('./ui')
-
-function checkWin (token) {
-  let win = false
-  const cells = store.game.cells
-  const winTypes = [[cells[0], cells[1], cells[2]], [cells[3], cells[4], cells[5]], [cells[6], cells[7], cells[8]], [cells[0], cells[3], cells[6]], [cells[1], cells[4], cells[7]], [cells[2], cells[5], cells[8]], [cells[0], cells[4], cells[8]], [cells[2], cells[4], cells[6]]]
-  winTypes.forEach(winType => {
-    if (winType.every(cell => {
-      return cell === token
-    })) {
-      win = true
-    }
-  })
-  return win
-}
+const gamelogic = require('./gamelogic')
 
 const onSignUp = (event) => {
   event.preventDefault()
@@ -59,7 +47,6 @@ const onChangePassword = (event) => {
 
 const onCreateGame = (event) => {
   event.preventDefault()
-  console.log(event.target)
   api.createGame()
     .then(ui.onCreateGameSuccess)
     .catch(ui.onCreateGameFailure)
@@ -76,18 +63,33 @@ const onUpdateGame = (event) => {
   event.preventDefault()
   const squareId = event.target.id
   const currentPlayer = store.currentPlayer
-  let over = false
-  // Mark the square
-  ui.onUpdateSquare(currentPlayer, squareId)
-  // Check if there is a winner
-  over = checkWin(currentPlayer)
-  // Update API on game
-  api.updateGame(squareId, over)
-    .then(ui.onUpdateGameSuccess)
-    .catch(ui.onUpdateGameFailure)
-  // If game is over...
-  if (over) {
-    ui.onGameOver(currentPlayer)
+  let winner = null
+  // Check if game is over
+  if (!store.game.over) {
+    // If square is marked
+    if (store.game.cells[squareId]) {
+      ui.onInvalidSquare()
+    } else {
+      // if square is unmarked
+      // Mark the square
+      ui.onUpdateSquare(currentPlayer, squareId)
+      // Check if there is a winner or a draw
+      if (gamelogic.checkWin(currentPlayer)) {
+        store.game.over = true
+        winner = currentPlayer
+      } else if (gamelogic.isDraw()) {
+        store.game.over = true
+        winner = 'draw'
+      }
+      // Update API on game
+      api.updateGame(squareId)
+        .then(ui.onUpdateGameSuccess)
+        .catch(ui.onUpdateGameFailure)
+      // If game is over...
+      if (store.game.over) {
+        ui.onGameOver(winner)
+      }
+    }
   }
 }
 
