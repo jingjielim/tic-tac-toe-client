@@ -13,16 +13,26 @@
     </head>
     <body>
       <h1>TIC TAC TOE</h1>
-      <p class="message"></p>
+      <p class="auth-message"></p>
+      <p class='game-message'></p>
       <div class="gameboard">
         TIC TAC TOE GAMEBOARD
-        <button id='create-game'>Start game</button>
         <div class='squares'>
-          {NEW GAME BOARD}
-          <div>
-            <button class='square' id='0'>Update game</button>
+          <div class="container">
+            <div class="row">
+              <div class="col-4 square" id="0"></div>
+              <div class="col-4 square" id="1"></div>
+              <div class="col-4 square" id="2"></div>
+              <div class="col-4 square" id="3"></div>
+              <div class="col-4 square" id="4"></div>
+              <div class="col-4 square" id="5"></div>
+              <div class="col-4 square" id="6"></div>
+              <div class="col-4 square" id="7"></div>
+              <div class="col-4 square" id="8"></div>
+            </div>
           </div>
         </div>
+        <button id='create-game'>Start game</button>
         <button id='get-games'>Get games played</button>
         <p id='games-played'></p>
       </div>

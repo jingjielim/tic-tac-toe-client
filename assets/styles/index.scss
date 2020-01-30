@@ -1,1 +1,12 @@
 @import '~bootstrap/scss/bootstrap';
+
+$border-color: #000;
+
+.square {
+  border: 1px solid $border-color;
+  padding-top: 33%;
+}
+
+.container {
+  width: 30%;
+}

@@ -1,14 +1,23 @@
 'use strict'
 const store = require('../store')
+const api = require('./api')
+const events = require('./events')
+function changePlayer () {
+  if (store.currentPlayer === 'o') {
+    store.currentPlayer = 'x'
+  } else if (store.currentPlayer === 'x') {
+    store.currentPlayer = 'o'
+  }
+}
 
 const onSignUpSuccess = (response) => {
-  $('.message').text('Sign up successful')
+  $('.auth-message').text('Sign up successful')
   $('#sign-up').trigger('reset')
 }
 
 const onSignUpFailure = (response) => {
   console.log(response)
-  $('.message').text('Sign up failed')
+  $('.auth-message').text('Sign up failed')
   $('#sign-up').trigger('reset')
 }
 
@@ -19,14 +28,17 @@ const onSignInSuccess = (response) => {
   $('#sign-out').show()
   $('#sign-up').hide()
   $('#sign-in').hide()
+  api.createGame()
+    .then(onCreateGameSuccess)
+    .catch(onCreateGameFailure)
 
-  $('.message').text('Sign in successful')
+  $('.auth-message').text('Sign in successful')
   $('#sign-in').trigger('reset')
 }
 
 const onSignInFailure = (response) => {
   console.log(response)
-  $('.message').text('Sign in failed')
+  $('.auth-message').text('Sign in failed')
   $('#sign-in').trigger('reset')
 }
 
@@ -37,39 +49,43 @@ const onSignOutSuccess = (response) => {
   $('#sign-up').show()
   $('#sign-in').show()
 
-  $('.message').text('Sign out successful')
+  $('.auth-message').text('Sign out successful')
 }
 
 const onSignOutFailure = (response) => {
   console.log(response)
-  $('.message').text('Sign out failed')
+  $('.auth-message').text('Sign out failed')
 }
 const onChangePasswordSuccess = (response) => {
-  $('.message').text('Change password successful')
+  $('.auth-message').text('Change password successful')
   $('#change-password').trigger('reset')
 }
 
 const onChangePasswordFailure = (response) => {
   console.log(response)
-  $('.message').text('Change password failed')
+  $('.auth-message').text('Change password failed')
   $('#change-password').trigger('reset')
 }
 
 const onCreateGameSuccess = (response) => {
   store.game = response.game
   store.currentPlayer = 'x'
+  $('.game-message').html(`<p>Player ${store.currentPlayer}'s turn</p>`)
+  $('.square').text('').on('click', events.onUpdateGame)
   // Show a new gameboard
 }
 const onCreateGameFailure = (response) => {
   console.log(response)
-  $('.message').text('Failed to create game')
+  $('.auth-message').text('Failed to create game')
 }
 
 const onUpdateGameSuccess = (response) => {
-  console.log(response)
   store.game = response.game
-  console.log('Game after update')
-  console.log(store.game)
+  changePlayer()
+  if (!store.game.over) {
+    $('.game-message').html(`<p>Player ${store.currentPlayer}'s turn</p>`)
+  }
+  console.log(store)
 }
 const onUpdateGameFailure = (response) => {
   console.log(response)
@@ -81,7 +97,18 @@ const onGetGamesSuccess = (response) => {
 }
 const onGetGamesFailure = (response) => {
   console.log(response)
-  $('.message').text('Failed to retrieve games played')
+  $('.auth-message').text('Failed to retrieve games played')
+}
+
+const onUpdateSquare = (token, squareId) => {
+  store.game.cells[squareId] = token
+  $('#' + squareId).html(`<p>${token}</p>`)
+  $('#' + squareId).off()
+}
+
+const onGameOver = (winner) => {
+  $('.game-message').text(`${winner} wins`)
+  $('.square').off()
 }
 
 module.exports = {
@@ -98,5 +125,7 @@ module.exports = {
   onUpdateGameSuccess,
   onUpdateGameFailure,
   onGetGamesSuccess,
-  onGetGamesFailure
+  onGetGamesFailure,
+  onUpdateSquare,
+  onGameOver
 }
