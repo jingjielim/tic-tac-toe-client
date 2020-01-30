@@ -12,14 +12,27 @@
       <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
     </head>
     <body>
+      <h1>TIC TAC TOE</h1>
       <p class="message"></p>
+      <div class="gameboard">
+        TIC TAC TOE GAMEBOARD
+      </div>
       <form id="sign-up">
         <fieldset>
-          <legend>Sign up!</legend>
+          <legend>Sign up</legend>
           <input name="credentials[email]" type="text" placeholder="email">
           <input name="credentials[password]" type="password" placeholder="password">
           <input name="credentials[password_confirmation]" type="password" placeholder="confirm password">
           <button type="submit">Sign Up</button>
+        </fieldset>
+      </form>
+
+      <form id="sign-in">
+        <fieldset>
+          <legend>Sign in</legend>
+          <input name="credentials[email]" type="text" placeholder="email" value="j@e">
+          <input name="credentials[password]" type="password" placeholder="password" value="1">
+          <button type="submit">Sign In</button>
         </fieldset>
       </form>
 

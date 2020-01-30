@@ -7,5 +7,7 @@ const events = require('./auth/events')
 // require('./example')
 
 $(() => {
+  $('.gameboard').hide()
   $('#sign-up').on('submit', events.onSignUp)
+  $('#sign-in').on('submit', events.onSignIn)
 })
