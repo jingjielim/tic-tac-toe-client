@@ -1,5 +1,5 @@
 'use strict'
-const events = require('./auth/events')
+const events = require('./game/events')
 // use require with a reference to bundle the file and use it in this file
 // const example = require('./example')
 
@@ -13,6 +13,10 @@ $(() => {
 
   $('#sign-up').on('submit', events.onSignUp)
   $('#sign-in').on('submit', events.onSignIn)
-  $('#sign-out').on('submit', events.onSignOut)
+  $('#sign-out').on('click', events.onSignOut)
   $('#change-password').on('submit', events.onChangePassword)
+
+  $('#create-game').on('click', events.onCreateGame)
+  $('#get-games').on('click', events.onGetGames)
+  $('.square').on('click', events.onUpdateGame)
 })

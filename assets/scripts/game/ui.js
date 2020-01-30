@@ -55,6 +55,35 @@ const onChangePasswordFailure = (response) => {
   $('#change-password').trigger('reset')
 }
 
+const onCreateGameSuccess = (response) => {
+  store.game = response.game
+  store.currentPlayer = 'x'
+  // Show a new gameboard
+}
+const onCreateGameFailure = (response) => {
+  console.log(response)
+  $('.message').text('Failed to create game')
+}
+
+const onUpdateGameSuccess = (response) => {
+  console.log(response)
+  store.game = response.game
+  console.log('Game after update')
+  console.log(store.game)
+}
+const onUpdateGameFailure = (response) => {
+  console.log(response)
+}
+
+const onGetGamesSuccess = (response) => {
+  console.log(response)
+  $('#games-played').text(response.games.length)
+}
+const onGetGamesFailure = (response) => {
+  console.log(response)
+  $('.message').text('Failed to retrieve games played')
+}
+
 module.exports = {
   onSignUpSuccess,
   onSignUpFailure,
@@ -63,5 +92,11 @@ module.exports = {
   onSignOutSuccess,
   onSignOutFailure,
   onChangePasswordSuccess,
-  onChangePasswordFailure
+  onChangePasswordFailure,
+  onCreateGameSuccess,
+  onCreateGameFailure,
+  onUpdateGameSuccess,
+  onUpdateGameFailure,
+  onGetGamesSuccess,
+  onGetGamesFailure
 }
