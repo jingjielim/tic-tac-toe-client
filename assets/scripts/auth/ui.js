@@ -2,7 +2,6 @@
 const store = require('../store')
 
 const onSignUpSuccess = (response) => {
-  console.log(response)
   $('.message').text('Sign up successful')
   $('#sign-up').trigger('reset')
 }
@@ -14,10 +13,13 @@ const onSignUpFailure = (response) => {
 }
 
 const onSignInSuccess = (response) => {
-  console.log(response.user.token)
   store.user = response.user
   $('.gameboard').show()
-  console.log(store)
+  $('#change-password').show()
+  $('#sign-out').show()
+  $('#sign-up').hide()
+  $('#sign-in').hide()
+
   $('.message').text('Sign in successful')
   $('#sign-in').trigger('reset')
 }
@@ -28,9 +30,21 @@ const onSignInFailure = (response) => {
   $('#sign-in').trigger('reset')
 }
 
-const onChangePasswordSuccess = (response) => {
+const onSignOutSuccess = (response) => {
+  $('.gameboard').hide()
+  $('#change-password').hide()
+  $('#sign-out').hide()
+  $('#sign-up').show()
+  $('#sign-in').show()
+
+  $('.message').text('Sign out successful')
+}
+
+const onSignOutFailure = (response) => {
   console.log(response)
-  console.log(store)
+  $('.message').text('Sign out failed')
+}
+const onChangePasswordSuccess = (response) => {
   $('.message').text('Change password successful')
   $('#change-password').trigger('reset')
 }
@@ -46,6 +60,8 @@ module.exports = {
   onSignUpFailure,
   onSignInSuccess,
   onSignInFailure,
+  onSignOutSuccess,
+  onSignOutFailure,
   onChangePasswordSuccess,
   onChangePasswordFailure
 }
