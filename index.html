@@ -12,6 +12,16 @@
       <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
     </head>
     <body>
-      <h1>Browser Template</h1>
+      <p class="message"></p>
+      <form id="sign-up">
+        <fieldset>
+          <legend>Sign up!</legend>
+          <input name="credentials[email]" type="text" placeholder="email">
+          <input name="credentials[password]" type="password" placeholder="password">
+          <input name="credentials[password_confirmation]" type="password" placeholder="confirm password">
+          <button type="submit">Sign Up</button>
+        </fieldset>
+      </form>
+
     </body>
 </html>
