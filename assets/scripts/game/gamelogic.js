@@ -30,13 +30,16 @@ function changePlayer () {
   }
 }
 
-function resetGameBoard () {
-  $('.square').text('')
+function setGameBoard () {
+  const cells = store.game.cells
+  for (let i = 0; i < cells.length; i++) {
+    $('#' + i).text(cells[i])
+  }
 }
 
 module.exports = {
   checkWin,
   isDraw,
   changePlayer,
-  resetGameBoard
+  setGameBoard
 }

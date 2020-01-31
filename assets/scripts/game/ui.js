@@ -4,11 +4,14 @@ const gamelogic = require('./gamelogic')
 const api = require('./api')
 
 const onSignUpSuccess = (response) => {
-  $('.auth-message').text('Sign up successful for ' + response.user.email).addClass('successful')
+  // console.log('sign up user')
+  // console.log(response)
   $('#sign-up').trigger('reset')
+  $('.auth-message').append(`<p class='signed-up'>Sign up successful for ${response.user.email}</p>`)
+  $('.signed-up').addClass('successful')
   setTimeout(() => {
-    $('.auth-message').text('').removeClass('successful')
-  }, 2000)
+    $('.signed-up').remove()
+  }, 5000)
 }
 
 const onSignUpFailure = (response) => {
@@ -21,11 +24,14 @@ const onSignUpFailure = (response) => {
   $('#sign-up').trigger('reset')
   setTimeout(() => {
     $('.auth-message').text('').removeClass('failure')
-  }, 2000)
+  }, 5000)
 }
 
 const onSignInSuccess = (response) => {
+  // console.log('sign in user:')
+  // console.log(response)
   store.user = response.user
+  $('#sign-in').trigger('reset')
   $('.gameboard').show()
   $('#change-password').show()
   $('#sign-out').show()
@@ -34,11 +40,11 @@ const onSignInSuccess = (response) => {
   api.createGame()
     .then(onCreateGameSuccess)
     .catch(onCreateGameFailure)
-  $('.auth-message').text('Sign in successful').addClass('successful')
-  $('#sign-in').trigger('reset')
+  $('.auth-message').append(`<p class='signed-in'>${response.user.email} signed in</p>`)
+  $('.signed-in').addClass('successful')
   setTimeout(() => {
-    $('.auth-message').text('').removeClass('successful')
-  }, 2000)
+    $('.signed-in').remove()
+  }, 5000)
 }
 
 const onSignInFailure = (response) => {
@@ -50,34 +56,35 @@ const onSignInFailure = (response) => {
   $('#sign-in').trigger('reset')
   setTimeout(() => {
     $('.auth-message').text('').removeClass('failure')
-  }, 2000)
+  }, 5000)
 }
 
 const onSignOutSuccess = (response) => {
   $('.gameboard').hide()
   $('#change-password').hide()
   $('#sign-out').hide()
+  $('.game-message').hide()
   $('#sign-up').show()
   $('#sign-in').show()
 
   $('.auth-message').text('Signed out successfully').addClass('successful')
   setTimeout(() => {
     $('.auth-message').text('').removeClass('successful')
-  }, 2000)
+  }, 5000)
 }
 
 const onSignOutFailure = (response) => {
   $('.auth-message').text('Sign out failed').addClass('failure')
   setTimeout(() => {
     $('.auth-message').text('').removeClass('failure')
-  }, 2000)
+  }, 5000)
 }
 const onChangePasswordSuccess = (response) => {
   $('.auth-message').text('Change password successful').addClass('successful')
   $('#change-password').trigger('reset')
   setTimeout(() => {
     $('.auth-message').text('').removeClass('successful')
-  }, 2000)
+  }, 5000)
 }
 
 const onChangePasswordFailure = (response) => {
@@ -86,20 +93,20 @@ const onChangePasswordFailure = (response) => {
   $('#change-password').trigger('reset')
   setTimeout(() => {
     $('.auth-message').text('').removeClass('failure')
-  }, 2000)
+  }, 5000)
 }
 
 const onCreateGameSuccess = (response) => {
   store.game = response.game
   store.currentPlayer = 'x'
   $('.game-message').text(`New Game started \nPlayer ${store.currentPlayer}'s turn`)
-  gamelogic.resetGameBoard()
+  gamelogic.setGameBoard()
 }
 const onCreateGameFailure = (response) => {
   $('.auth-message').text('Failed to create game').addClass('failure')
   setTimeout(() => {
     $('.auth-message').text('').removeClass('failure')
-  }, 2000)
+  }, 5000)
 }
 
 const onUpdateGameSuccess = (response) => {
@@ -114,7 +121,7 @@ const onUpdateGameFailure = (response) => {
   $('.auth-message').text('Failed to update game').addClass('failure')
   setTimeout(() => {
     $('.auth-message').text('').removeClass('failure')
-  }, 2000)
+  }, 5000)
 }
 
 const onGetGamesSuccess = (response) => {

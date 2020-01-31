@@ -11,8 +11,20 @@ const onSignUp = (event) => {
 
   const form = event.target
   const userData = getFormFields(form)
+  console.log(userData)
+  const userPass = {
+    credentials: {
+      email: userData.credentials.email,
+      password: userData.credentials.password
+    }
+  }
   api.signUp(userData)
-    .then(ui.onSignUpSuccess)
+    .then((response) => {
+      ui.onSignUpSuccess(response)
+      api.signIn(userPass)
+        .then(ui.onSignInSuccess)
+        .catch(ui.onSignInFailure)
+    })
     .catch(ui.onSignUpFailure)
 }
 
