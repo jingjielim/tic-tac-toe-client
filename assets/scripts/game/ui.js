@@ -98,8 +98,6 @@ const onChangePasswordFailure = (response) => {
 
 const onCreateGameSuccess = (response) => {
   store.game = response.game
-  store.currentPlayer = 'x'
-  $('.game-message').text(`New Game started \nPlayer ${store.currentPlayer}'s turn`)
   gamelogic.setGameBoard()
 }
 const onCreateGameFailure = (response) => {
@@ -110,10 +108,11 @@ const onCreateGameFailure = (response) => {
 }
 
 const onUpdateGameSuccess = (response) => {
+  console.log(store)
   store.game = response.game
   gamelogic.changePlayer()
   if (!store.game.over) {
-    $('.game-message').html(`<p>Player ${store.currentPlayer}'s turn</p>`)
+    $('.game-message').html(`<p>Player ${store.currentP.name}'s turn</p>`)
   }
 }
 
@@ -131,9 +130,9 @@ const onGetGamesFailure = (response) => {
   $('.auth-message').text('Failed to retrieve games played')
 }
 
-const onUpdateSquare = (token, squareId) => {
-  store.game.cells[squareId] = token
-  $('#' + squareId).text(token)
+const onUpdateSquare = (currentP, squareId) => {
+  store.game.cells[squareId] = currentP.index
+  $('#' + squareId).text(currentP.token)
 }
 
 const onGameOver = (winner) => {

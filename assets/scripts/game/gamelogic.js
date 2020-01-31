@@ -2,13 +2,13 @@
 
 const store = require('../store')
 
-function checkWin (token) {
+function checkWin (currentPIndex) {
   let win = false
   const cells = store.game.cells
   const winTypes = [[cells[0], cells[1], cells[2]], [cells[3], cells[4], cells[5]], [cells[6], cells[7], cells[8]], [cells[0], cells[3], cells[6]], [cells[1], cells[4], cells[7]], [cells[2], cells[5], cells[8]], [cells[0], cells[4], cells[8]], [cells[2], cells[4], cells[6]]]
   winTypes.forEach(winType => {
     if (winType.every(cell => {
-      return cell === token
+      return cell === currentPIndex
     })) {
       win = true
     }
@@ -23,17 +23,27 @@ function isDraw () {
 }
 
 function changePlayer () {
-  if (store.currentPlayer === 'o') {
-    store.currentPlayer = 'x'
-  } else if (store.currentPlayer === 'x') {
-    store.currentPlayer = 'o'
+  if (store.currentP === store.players[0]) {
+    store.currentP = store.players[1]
+  } else {
+    store.currentP = store.players[0]
   }
 }
 
 function setGameBoard () {
+  console.log(store)
   const cells = store.game.cells
+  store.players = [{index: 'x', token: 'Hi', name: 'player_x'}, {index: 'o', token: 'bye', name: 'player_o'}]
+  store.currentP = store.players[0]
+  $('.game-message').text(`New Game started. ${store.currentP.name}'s turn`)
   for (let i = 0; i < cells.length; i++) {
-    $('#' + i).text(cells[i])
+    if (cells[i] === store.players[0].index) {
+      $('#' + i).text(store.players[0].token)
+    } else if (cells[i] === store.players[1].index) {
+      $('#' + i).text(store.players[1].token)
+    } else {
+      $('#' + i).text('')
+    }
   }
 }
 

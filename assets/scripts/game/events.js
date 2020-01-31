@@ -6,6 +6,18 @@ const api = require('./api')
 const ui = require('./ui')
 const gamelogic = require('./gamelogic')
 
+const showSignIn = (event) => {
+  console.log(event)
+  event.preventDefault()
+  $('#sign-up').slideUp(400, 'linear', () => { $('#sign-in').slideDown(400) })
+}
+
+const showSignUp = (event) => {
+  console.log(event)
+  event.preventDefault()
+  $('#sign-in').slideUp(400, 'linear', () => { $('#sign-up').slideDown(400) })
+}
+
 const onSignUp = (event) => {
   event.preventDefault()
 
@@ -74,7 +86,7 @@ const onGetGames = (event) => {
 const onUpdateGame = (event) => {
   event.preventDefault()
   const squareId = event.target.id
-  const currentPlayer = store.currentPlayer
+  const currentP = store.currentP
   let winner = null
   // Check if game is over
   if (!store.game.over) {
@@ -84,11 +96,11 @@ const onUpdateGame = (event) => {
     } else {
       // if square is unmarked
       // Mark the square
-      ui.onUpdateSquare(currentPlayer, squareId)
+      ui.onUpdateSquare(currentP, squareId)
       // Check if there is a winner or a draw
-      if (gamelogic.checkWin(currentPlayer)) {
+      if (gamelogic.checkWin(currentP.index)) {
         store.game.over = true
-        winner = currentPlayer
+        winner = currentP.name
       } else if (gamelogic.isDraw()) {
         store.game.over = true
         winner = 'draw'
@@ -106,6 +118,8 @@ const onUpdateGame = (event) => {
 }
 
 module.exports = {
+  showSignIn,
+  showSignUp,
   onSignUp,
   onSignIn,
   onSignOut,

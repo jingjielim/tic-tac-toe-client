@@ -62,7 +62,7 @@ const updateGame = (squareId, over) => {
       'game': {
         'cell': {
           'index': squareId,
-          'value': store.currentPlayer
+          'value': store.currentP.index
         },
         'over': store.game.over
       }
