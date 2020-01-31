@@ -2,9 +2,23 @@
 
 $border-color: #000;
 
+body {
+  font-family: 'Montserrat', sans-serif;
+
+}
+.message {
+  max-width: 400px;
+  width: 70%;
+}
+
 .square {
-  border: 1px solid $border-color;
-  padding-top: 33%;
+  align-items: center;
+  border: $border-color;
+  font-size: 3rem;
+  justify-content: center;
+  line-height: 70%;
+  padding: 5% 0;
+  white-space: pre;
 }
 
 .sign-in {
@@ -12,22 +26,34 @@ $border-color: #000;
 }
 
 .successful {
-  background: limegreen;
+  color: #27b857;
 }
 
 .failure {
-  background: red;
+  color: #C70039;
 }
 
 .gameboard {
-  width: 30%;
+  max-width: 400px;
+  width: 70%;
 }
 
-.form-label-group{
+.form-label-group {
   margin-bottom: 1rem;
 }
 
-.form-change{
+.form-control {
+  &:focus,
+  &.focus {
+    border: #ffa08b;
+    outline: 0;
+    box-shadow: 0 0 0 .2rem #ffa08b;
+  }
+
+}
+
+
+.form-change {
   margin-top: 1rem;
 }
 
@@ -35,4 +61,25 @@ $border-color: #000;
 .sign-up-btn {
   cursor: pointer;
   text-decoration: underline;
+}
+
+.btn {
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background-color: #ffa08b;
+  border: 0;
+
+  &:focus,
+  &.focus {
+    background-color: #ffbd8b;
+    box-shadow: 0 0 0 .2rem #ffa08b;
+  }
+
+  &:hover,
+  &.hover {
+    background-color: #ffbd8b;
+    box-shadow: 0 0 0 .2rem #ffa08b;
+  }
 }

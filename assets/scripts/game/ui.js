@@ -3,97 +3,100 @@ const store = require('../store')
 const gamelogic = require('./gamelogic')
 const api = require('./api')
 
+const sysMsg = (type, state, msg) => {
+  $('.sys-message').append(`<p class="${type}"> ${msg}`)
+  $(`.${type}`).addClass(`${state}`)
+  setTimeout(() => {
+    $(`.${type}`).remove()
+  }, 2000)
+}
+
 const onSignUpSuccess = (response) => {
   // console.log('sign up user')
   // console.log(response)
-  $('#sign-up').trigger('reset')
-  $('.auth-message').append(`<p class='signed-up'>Sign up successful for ${response.user.email}</p>`)
-  $('.signed-up').addClass('successful')
-  setTimeout(() => {
-    $('.signed-up').remove()
-  }, 5000)
+  $('#sign-up-form').trigger('reset')
+  const msg = `Sign up successful for ${response.user.email}`
+  const type = 'sign-up-s'
+  const state = 'successful'
+  sysMsg(type, state, msg)
 }
 
 const onSignUpFailure = (response) => {
+  $('#sign-up-form').trigger('reset')
   const resText = JSON.parse(response.responseText)
-  let errMsg = ''
+  let msg = ''
   for (const key in resText) {
-    errMsg = errMsg + ' ' + key + ' ' + resText[key] + '. '
+    msg = msg + ' ' + key + ' ' + resText[key] + '. '
   }
-  $('.auth-message').text('Sign up failed: ' + errMsg).addClass('failure')
-  $('#sign-up').trigger('reset')
-  setTimeout(() => {
-    $('.auth-message').text('').removeClass('failure')
-  }, 5000)
+  const type = 'sign-up-f'
+  const state = 'failure'
+  sysMsg(type, state, msg)
 }
 
 const onSignInSuccess = (response) => {
   // console.log('sign in user:')
   // console.log(response)
-  store.user = response.user
-  $('#sign-in').trigger('reset')
-  $('.gameboard').show()
-  $('#change-password').show()
+  $('#sign-in-form').trigger('reset')
+  $('.start-game-btn').show()
+  $('#change-password-btn').show()
   $('#sign-out').show()
   $('#sign-up').hide()
   $('#sign-in').hide()
-  api.createGame()
-    .then(onCreateGameSuccess)
-    .catch(onCreateGameFailure)
-  $('.auth-message').append(`<p class='signed-in'>${response.user.email} signed in</p>`)
-  $('.signed-in').addClass('successful')
-  setTimeout(() => {
-    $('.signed-in').remove()
-  }, 5000)
+  store.user = response.user
+  // api.createGame()
+  //   .then(onCreateGameSuccess)
+  //   .catch(onCreateGameFailure)
+  const msg = `${response.user.email} signed in`
+  const state = 'successful'
+  const type = 'sign-in-s'
+  sysMsg(type, state, msg)
 }
 
 const onSignInFailure = (response) => {
+  let msg
   if (response.statusText === 'Unauthorized') {
-    $('.auth-message').text('Sign in failed: Incorrect email or password').addClass('failure')
+    msg = 'Sign in failed: Incorrect email or password'
   } else {
-    $('.auth-message').text('Sign in failed').addClass('failure')
+    msg = 'Sign in failed'
   }
-  $('#sign-in').trigger('reset')
-  setTimeout(() => {
-    $('.auth-message').text('').removeClass('failure')
-  }, 5000)
+  const state = 'failure'
+  const type = 'sign-in-f'
+  sysMsg(type, state, msg)
+  $('#sign-in-form').trigger('reset')
 }
 
 const onSignOutSuccess = (response) => {
   $('.gameboard').hide()
-  $('#change-password').hide()
+  $('#change-password-btn').hide()
   $('#sign-out').hide()
-  $('.game-message').hide()
-  $('#sign-up').show()
   $('#sign-in').show()
-
-  $('.auth-message').text('Signed out successfully').addClass('successful')
-  setTimeout(() => {
-    $('.auth-message').text('').removeClass('successful')
-  }, 5000)
+  const msg = 'Signed out successfully'
+  const state = 'successful'
+  const type = 'sign-out-s'
+  sysMsg(type, state, msg)
 }
 
 const onSignOutFailure = (response) => {
-  $('.auth-message').text('Sign out failed').addClass('failure')
-  setTimeout(() => {
-    $('.auth-message').text('').removeClass('failure')
-  }, 5000)
+  const msg = 'Signed out failed'
+  const state = 'failure'
+  const type = 'sign-out-f'
+  sysMsg(type, state, msg)
 }
+
 const onChangePasswordSuccess = (response) => {
-  $('.auth-message').text('Change password successful').addClass('successful')
-  $('#change-password').trigger('reset')
-  setTimeout(() => {
-    $('.auth-message').text('').removeClass('successful')
-  }, 5000)
+  $('#change-password-form').trigger('reset')
+  $('.failed-change').text('')
+  const msg = 'Change password successful'
+  const state = 'successful'
+  const type = 'change-pw-s'
+  sysMsg(type, state, msg)
+  $('#changePWModal').modal('hide')
 }
 
 const onChangePasswordFailure = (response) => {
-  console.log(response)
-  $('.auth-message').text('Change password failed').addClass('failure')
-  $('#change-password').trigger('reset')
-  setTimeout(() => {
-    $('.auth-message').text('').removeClass('failure')
-  }, 5000)
+  $('#change-password-form').trigger('reset')
+  $('.failed-change').text('Failed to change password. Please try again.')
+  $('.failed-change').addClass('failure')
 }
 
 const onCreateGameSuccess = (response) => {
@@ -101,33 +104,35 @@ const onCreateGameSuccess = (response) => {
   gamelogic.setGameBoard()
 }
 const onCreateGameFailure = (response) => {
-  $('.auth-message').text('Failed to create game').addClass('failure')
-  setTimeout(() => {
-    $('.auth-message').text('').removeClass('failure')
-  }, 5000)
+  const msg = 'Failed to create game'
+  const state = 'failure'
+  const type = 'create-game-f'
+  sysMsg(type, state, msg)
 }
 
 const onUpdateGameSuccess = (response) => {
-  console.log(store)
   store.game = response.game
   gamelogic.changePlayer()
   if (!store.game.over) {
-    $('.game-message').html(`<p>Player ${store.currentP.name}'s turn</p>`)
+    $('.game-message').html(`${store.currentP.name}'s turn`)
   }
 }
 
 const onUpdateGameFailure = (response) => {
-  $('.auth-message').text('Failed to update game').addClass('failure')
-  setTimeout(() => {
-    $('.auth-message').text('').removeClass('failure')
-  }, 5000)
+  const msg = 'Failed to update game'
+  const state = 'failure'
+  const type = 'update-game-f'
+  sysMsg(type, state, msg)
 }
 
 const onGetGamesSuccess = (response) => {
-  $('#games-played').text(response.games.length)
+  $('.games-played').text(`Total games played: ${response.games.length}`)
 }
 const onGetGamesFailure = (response) => {
-  $('.auth-message').text('Failed to retrieve games played')
+  const msg = 'Failed to get games'
+  const state = 'failure'
+  const type = 'get-game-f'
+  sysMsg(type, state, msg)
 }
 
 const onUpdateSquare = (currentP, squareId) => {

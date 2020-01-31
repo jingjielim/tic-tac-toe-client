@@ -7,15 +7,21 @@ const ui = require('./ui')
 const gamelogic = require('./gamelogic')
 
 const showSignIn = (event) => {
-  console.log(event)
   event.preventDefault()
   $('#sign-up').slideUp(400, 'linear', () => { $('#sign-in').slideDown(400) })
 }
 
 const showSignUp = (event) => {
-  console.log(event)
   event.preventDefault()
   $('#sign-in').slideUp(400, 'linear', () => { $('#sign-up').slideDown(400) })
+}
+
+const onStartGame = (event) => {
+  $('.gameboard').slideDown()
+  $('.start-game-btn').hide()
+  api.createGame()
+    .then(ui.onCreateGameSuccess)
+    .catch(ui.onCreateGameFailure)
 }
 
 const onSignUp = (event) => {
@@ -118,6 +124,7 @@ const onUpdateGame = (event) => {
 }
 
 module.exports = {
+  onStartGame,
   showSignIn,
   showSignUp,
   onSignUp,

@@ -6,6 +6,8 @@
 
       <!-- Do not add `link` tags-->
       <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+      <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+
 
       <!-- Do not add `script` tags-->
       <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
@@ -13,30 +15,36 @@
     </head>
     <body class="text-center">
       <h1 class="title">TIC TAC TOE</h1>
-      <p class="auth-message"></p>
-      <p class='game-message'></p>
+
+      <div class="container message">
+        <p class="sys-message"></p>
+      </div>
+      <button class="btn btn-primary start-game-btn" id='start-game'>Start game</button>
       <div class="container gameboard">
-            <div class="row">
-              <div class="col-4 square" id="0"></div>
-              <div class="col-4 square" id="1"></div>
-              <div class="col-4 square" id="2"></div>
-              <div class="col-4 square" id="3"></div>
-              <div class="col-4 square" id="4"></div>
-              <div class="col-4 square" id="5"></div>
-              <div class="col-4 square" id="6"></div>
-              <div class="col-4 square" id="7"></div>
-              <div class="col-4 square" id="8"></div>
-            </div>
+        <p class="game-message"></p>
+
+        <div class="row">
+          <div class="col-4 square border-bottom border-right" id="0"> </div>
+          <div class="col-4 square border-bottom" id="1"> </div>
+          <div class="col-4 square border-bottom border-left" id="2"> </div>
+          <div class="col-4 square border-right" id="3"> </div>
+          <div class="col-4 square" id="4"> </div>
+          <div class="col-4 square border-left" id="5"> </div>
+          <div class="col-4 square border-top border-right" id="6"> </div>
+          <div class="col-4 square border-top" id="7"> </div>
+          <div class="col-4 square border-top border-left" id="8"> </div>
+        </div>
+        <p class='games-played'></p>
+        <button class="btn btn-primary game-btn" id='create-game'>Reset game</button>
+        <button class="btn btn-primary game-btn" id='get-games'>Get games played</button>
       </div>
 
-      <button id='create-game'>Reset game</button>
-      <button id='get-games'>Get games played</button>
-      <p id='games-played'></p>
       <div class="container">
         <div class="row justify-content-center">
           <div class="card" id='sign-up'>
             <div class="card-body">
-              <form id="sign-up-form" class="text-center">
+              <form id="sign-up-form" class="text-center" autocomplete="off">
+
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/2000px-Tic_tac_toe.svg.png" alt="tic tac toe" width="72" height="72" class="mb-4">
                 <h5 class="card-title text-center">Sign Up</h5>
                 <div class="form-group">
@@ -60,7 +68,7 @@
 
           <div class="card" id='sign-in'>
             <div class="card-body">
-              <form id="sign-in-form" class="text-center">
+              <form id="sign-in-form" class="text-center" autocomplete="off">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/2000px-Tic_tac_toe.svg.png" alt="tic tac toe" width="72" height="72" class="mb-4">
                 <h5 class="card-title">Sign In</h5>
                 <div class="form-label-group">
@@ -80,18 +88,50 @@
         </div>
       </div>
 
+      <!-- Button trigger modal -->
+      <button id="change-password-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#changePWModal">
+        Change Password
+      </button>
 
+      <!-- Modal -->
+      <div class="modal fade" id="changePWModal" tabindex="-1" role="dialog" aria-labelledby="changePWmodal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5>Change Password</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="row justify-content-center">
+                  <div class="" id='change-password'>
+                    <p class="failed-change"></p>
+                    <div class="card-body">
+                      <form id="change-password-form">
+                          <div class="form-label-group">
+                            <input class="form-control" name="passwords[old]" type="password" placeholder="Old password" required>
+                          </div>
 
-      <form id="change-password">
-        <fieldset>
-          <legend>Change password</legend>
-          <input name="passwords[old]" type="password" placeholder="Old password">
-          <input name="passwords[new]" type="password" placeholder="New password">
-          <button type="submit">Change password</button>
-        </fieldset>
-      </form>
-
-      <button id="sign-out" >Sign out</button>
+                          <div class="form-label-group">
+                            <input type="password" id="inputPassword" name="passwords[new]" class="form-control" placeholder="New password" required>
+                          </div>
+                          <button class="btn btn-primary" type="submit">Change Password</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Change Password</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary"id="sign-out" >Sign out</button>
 
     </body>
 </html>

@@ -8,16 +8,19 @@ const events = require('./game/events')
 
 $(() => {
   $('.gameboard').hide()
-  $('#change-password').hide()
+  $('#change-password-btn').hide()
   $('#sign-out').hide()
   $('#sign-up').hide()
+  $('.start-game-btn').hide()
+
   $('.sign-in-btn').on('click', events.showSignIn)
   $('.sign-up-btn').on('click', events.showSignUp)
+  $('#change-password-btn').on('click', events.showChangePW)
+  $('.start-game-btn').on('click', events.onStartGame)
   $('#sign-up').on('submit', events.onSignUp)
   $('#sign-in').on('submit', events.onSignIn)
   $('#sign-out').on('click', events.onSignOut)
   $('#change-password').on('submit', events.onChangePassword)
-
   $('#create-game').on('click', events.onCreateGame)
   $('#get-games').on('click', events.onGetGames)
   $('.square').on('click', events.onUpdateGame)

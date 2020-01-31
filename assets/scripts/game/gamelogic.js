@@ -33,16 +33,16 @@ function changePlayer () {
 function setGameBoard () {
   console.log(store)
   const cells = store.game.cells
-  store.players = [{index: 'x', token: 'Hi', name: 'player_x'}, {index: 'o', token: 'bye', name: 'player_o'}]
+  store.players = [{index: 'x', token: '❌', name: 'Player X'}, {index: 'o', token: '⭕️', name: 'Player O'}]
   store.currentP = store.players[0]
   $('.game-message').text(`New Game started. ${store.currentP.name}'s turn`)
   for (let i = 0; i < cells.length; i++) {
     if (cells[i] === store.players[0].index) {
-      $('#' + i).text(store.players[0].token)
+      $('#' + i).html(store.players[0].token)
     } else if (cells[i] === store.players[1].index) {
-      $('#' + i).text(store.players[1].token)
+      $('#' + i).html(store.players[1].token)
     } else {
-      $('#' + i).text('')
+      $('#' + i).html(' ')
     }
   }
 }
