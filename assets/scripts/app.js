@@ -26,7 +26,7 @@ $(() => {
   $('.square').on('click', events.onUpdateGame)
 
   // Development shortcut
-  setTimeout(() => {
-    $('#sign-in-form').trigger('submit')
-  }, 500)
+  // setTimeout(() => {
+  //   $('#sign-in-form').trigger('submit')
+  // }, 500)
 })
