@@ -1,11 +1,23 @@
 @import '~bootstrap/scss/bootstrap';
 
 $border-color: #000;
+$square-bg: #fff1e5;
+$square-hover-bg: #fad2d2;
+$win-bg: #b8e08f;
+$win-hover-bg: #e6fad2;
+$success-color: #27b857;
+$failure-color: #c70039;
+$btn-color: #ffa08b;
+$btn-hover-color: #ffbd8b;
 
 body {
   font-family: 'Montserrat', sans-serif;
-
 }
+
+.title {
+  margin-top: 5%;
+}
+
 .message {
   max-width: 400px;
   width: 70%;
@@ -13,24 +25,53 @@ body {
 
 .square {
   align-items: center;
+  background-color: $square-bg;
   border: $border-color;
-  font-size: 3rem;
+  cursor: pointer;
+  font-size: 4rem;
   justify-content: center;
   line-height: 70%;
   padding: 5% 0;
   white-space: pre;
+
+  &:hover {
+    background-color: $square-hover-bg;
+  }
+}
+
+
+
+.inactive-square {
+  cursor: default;
+
+  &:hover {
+    background-color: $square-bg;
+  }
+}
+
+.win-square {
+  background-color: $win-bg;
+
+  &:hover {
+    background-color: $win-hover-bg;
+  }
 }
 
 .sign-in {
   max-width: 330px;
 }
 
+.games-played {
+  margin: 0;
+  padding-top: 10px;
+}
+
 .successful {
-  color: #27b857;
+  color: $success-color;
 }
 
 .failure {
-  color: #C70039;
+  color: $failure-color;
 }
 
 .gameboard {
@@ -45,13 +86,12 @@ body {
 .form-control {
   &:focus,
   &.focus {
-    border: #ffa08b;
+    border: $btn-color;
+    box-shadow: 0 0 0 .2rem $btn-hover-color;
     outline: 0;
-    box-shadow: 0 0 0 .2rem #ffa08b;
+
   }
-
 }
-
 
 .form-change {
   margin-top: 1rem;
@@ -68,18 +108,18 @@ body {
 }
 
 .btn-primary {
-  background-color: #ffa08b;
+  background-color: $btn-color;
   border: 0;
 
   &:focus,
   &.focus {
-    background-color: #ffbd8b;
-    box-shadow: 0 0 0 .2rem #ffa08b;
+    background-color: $btn-hover-color;
+    box-shadow: 0 0 0 .2rem $btn-color;
   }
 
   &:hover,
   &.hover {
-    background-color: #ffbd8b;
-    box-shadow: 0 0 0 .2rem #ffa08b;
+    background-color: $btn-hover-color;
+    box-shadow: 0 0 0 .2rem $btn-color;
   }
 }

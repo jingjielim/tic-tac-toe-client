@@ -26,7 +26,10 @@ $(() => {
   $('.square').on('click', events.onUpdateGame)
 
   // Development shortcut
+  // $('#sign-in').hide()
   // setTimeout(() => {
+  //   $('#signInEmail').val('j@e')
+  //   $('#signInPassword').val('1')
   //   $('#sign-in-form').trigger('submit')
   // }, 500)
 })

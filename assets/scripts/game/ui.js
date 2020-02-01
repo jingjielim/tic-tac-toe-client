@@ -1,7 +1,6 @@
 'use strict'
 const store = require('../store')
 const gamelogic = require('./gamelogic')
-const api = require('./api')
 
 const sysMsg = (type, state, msg) => {
   $('.sys-message').append(`<p class="${type}"> ${msg}`)
@@ -70,6 +69,10 @@ const onSignOutSuccess = (response) => {
   $('#change-password-btn').hide()
   $('#sign-out').hide()
   $('#sign-in').show()
+  $('.start-game-btn').hide()
+
+  // Delete all store items related to this session
+  Object.keys(store).forEach(function (key) { delete store[key] })
   const msg = 'Signed out successfully'
   const state = 'successful'
   const type = 'sign-out-s'
@@ -137,13 +140,17 @@ const onGetGamesFailure = (response) => {
 
 const onUpdateSquare = (currentP, squareId) => {
   store.game.cells[squareId] = currentP.index
-  $('#' + squareId).text(currentP.token)
+  $('#' + squareId).text(currentP.token).addClass('inactive-square')
 }
 
 const onGameOver = (winner) => {
+  $('.square').addClass('inactive-square')
   if (winner === 'draw') {
     $('.game-message').text(`Draw`)
   } else {
+    store.winType.forEach(cell => {
+      $(`#${cell}`).addClass('win-square')
+    })
     $('.game-message').text(`${winner} wins`)
   }
 }

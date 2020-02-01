@@ -22,7 +22,6 @@
       <button class="btn btn-primary start-game-btn" id='start-game'>Start game</button>
       <div class="container gameboard">
         <p class="game-message"></p>
-
         <div class="row">
           <div class="col-4 square border-bottom border-right" id="0"> </div>
           <div class="col-4 square border-bottom" id="1"> </div>
@@ -32,7 +31,7 @@
           <div class="col-4 square border-left" id="5"> </div>
           <div class="col-4 square border-top border-right" id="6"> </div>
           <div class="col-4 square border-top" id="7"> </div>
-          <div class="col-4 square border-top border-left" id="8"> </div>
+            <div class="col-4 square border-top border-left" id="8"> </div>
         </div>
         <p class='games-played'></p>
         <button class="btn btn-primary game-btn" id='create-game'>Reset game</button>
@@ -70,13 +69,26 @@
             <div class="card-body">
               <form id="sign-in-form" class="text-center" autocomplete="off">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/2000px-Tic_tac_toe.svg.png" alt="tic tac toe" width="72" height="72" class="mb-4">
+                <!-- <div class="container fake-gameboard" width="72" height="72">
+                  <div class="row">
+                    <div class="col-4 square border-bottom border-right" id="0"> </div>
+                    <div class="col-4 square border-bottom" id="1"> </div>
+                    <div class="col-4 square border-bottom border-left" id="2"> </div>
+                    <div class="col-4 square border-right" id="3"> </div>
+                    <div class="col-4 square" id="4"> </div>
+                    <div class="col-4 square border-left" id="5"> </div>
+                    <div class="col-4 square border-top border-right" id="6"> </div>
+                    <div class="col-4 square border-top" id="7"> </div>
+                    <div class="col-4 square border-top border-left" id="8"> </div>
+                  </div>
+                </div> -->
                 <h5 class="card-title">Sign In</h5>
                 <div class="form-label-group">
-                  <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="credentials[email]" value='j@e' required autofocus>
+                  <input type="email" id="signInEmail" class="form-control" placeholder="Email address" name="credentials[email]" required autofocus>
                 </div>
 
                 <div class="form-label-group">
-                  <input type="password" id="inputPassword" name="credentials[password]" class="form-control" placeholder="Password" value="1" required>
+                  <input type="password" id="signInPassword" name="credentials[password]" class="form-control" placeholder="Password" required>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign In</button>
                 <p class="form-change">
