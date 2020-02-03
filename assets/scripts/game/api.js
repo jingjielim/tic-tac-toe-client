@@ -64,7 +64,7 @@ const updateGame = (squareId, over) => {
           'index': squareId,
           'value': store.currentP.index
         },
-        'over': store.game.over
+        'over': over
       }
     }
   })
@@ -80,6 +80,16 @@ const getGames = () => {
   })
 }
 
+const joinGame = (gameId) => {
+  return $.ajax({
+    url: config.apiUrl + '/games/' + gameId,
+    method: 'PATCH',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    },
+    data: {}
+  })
+}
 module.exports = {
   signUp,
   signIn,
@@ -87,5 +97,6 @@ module.exports = {
   changePassword,
   createGame,
   updateGame,
-  getGames
+  getGames,
+  joinGame
 }

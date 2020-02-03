@@ -2,7 +2,7 @@
 
 const store = require('../store')
 
-function checkWin (currentPIndex) {
+function checkWin () {
   let win = false
   const cells = store.game.cells
   let currentWinType = 0
@@ -18,9 +18,11 @@ function checkWin (currentPIndex) {
   ]
   winTypes.forEach(winType => {
     if (winType.every(cell => {
-      return cell === currentPIndex
+      return cell && cell === winType[0]
     })) {
       win = true
+      // Store the winner's index and the winning type when a win happens
+      store.winIndex = winType[0]
       switch (currentWinType) {
         case (0): {
           store.winType = [0, 1, 2]
@@ -64,38 +66,18 @@ function checkWin (currentPIndex) {
 function isDraw () {
   const cells = store.game.cells
   // true if every cell is fill. false if any cell is empty
-  return cells.every(cell => cell)
+  return cells.every(cell => cell) && !checkWin()
 }
 
-function changePlayer () {
-  if (store.currentP === store.players[0]) {
-    store.currentP = store.players[1]
-  } else {
-    store.currentP = store.players[0]
-  }
-}
-
-function setGameBoard () {
-  console.log(store)
-  const cells = store.game.cells
-  store.players = [{index: 'x', token: '❌', name: 'Player X'}, {index: 'o', token: '⭕️', name: 'Player O'}]
-  store.currentP = store.players[0]
-  $('.game-message').text(`New Game started. ${store.currentP.name}'s turn`)
-  for (let i = 0; i < cells.length; i++) {
-    if (cells[i] === store.players[0].index) {
-      $('#' + i).html(store.players[0].token).addClass('inactive-square')
-    } else if (cells[i] === store.players[1].index) {
-      $('#' + i).html(store.players[1].token).addClass('inactive-square')
-    } else {
-      $('#' + i).html(' ').removeClass('inactive-square')
-    }
-    $('#' + i).html(' ').removeClass('win-square')
-  }
-}
+// function changePlayer () {
+//   if (store.currentP === store.players[0]) {
+//     store.currentP = store.players[1]
+//   } else {
+//     store.currentP = store.players[0]
+//   }
+// }
 
 module.exports = {
   checkWin,
-  isDraw,
-  changePlayer,
-  setGameBoard
+  isDraw
 }

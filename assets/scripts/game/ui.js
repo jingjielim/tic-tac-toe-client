@@ -1,19 +1,20 @@
 'use strict'
 const store = require('../store')
 const gamelogic = require('./gamelogic')
+const resourceWatcher = require('./resourcewatcher.js')
 
 const sysMsg = (type, state, msg) => {
   $('.sys-message').append(`<p class="${type}"> ${msg}`)
   $(`.${type}`).addClass(`${state}`)
   setTimeout(() => {
     $(`.${type}`).remove()
-  }, 2000)
+  }, 3500)
 }
 
 const onSignUpSuccess = (response) => {
   // console.log('sign up user')
   // console.log(response)
-  $('#sign-up-form').trigger('reset')
+  $('.sign-up-form').trigger('reset')
   const msg = `Sign up successful for ${response.user.email}`
   const type = 'sign-up-s'
   const state = 'successful'
@@ -21,7 +22,7 @@ const onSignUpSuccess = (response) => {
 }
 
 const onSignUpFailure = (response) => {
-  $('#sign-up-form').trigger('reset')
+  $('.sign-up-form').trigger('reset')
   const resText = JSON.parse(response.responseText)
   let msg = ''
   for (const key in resText) {
@@ -35,8 +36,8 @@ const onSignUpFailure = (response) => {
 const onSignInSuccess = (response) => {
   // console.log('sign in user:')
   // console.log(response)
-  $('#sign-in-form').trigger('reset')
-  $('.start-game-btn').show()
+  $('.sign-in-form').trigger('reset')
+  $('.game-options').show()
   $('#change-password-btn').show()
   $('#sign-out').show()
   $('#sign-up').hide()
@@ -61,7 +62,7 @@ const onSignInFailure = (response) => {
   const state = 'failure'
   const type = 'sign-in-f'
   sysMsg(type, state, msg)
-  $('#sign-in-form').trigger('reset')
+  $('.sign-in-form').trigger('reset')
 }
 
 const onSignOutSuccess = (response) => {
@@ -69,7 +70,7 @@ const onSignOutSuccess = (response) => {
   $('#change-password-btn').hide()
   $('#sign-out').hide()
   $('#sign-in').show()
-  $('.start-game-btn').hide()
+  $('.game-options').hide()
 
   // Delete all store items related to this session
   Object.keys(store).forEach(function (key) { delete store[key] })
@@ -87,7 +88,7 @@ const onSignOutFailure = (response) => {
 }
 
 const onChangePasswordSuccess = (response) => {
-  $('#change-password-form').trigger('reset')
+  $('.change-password-form').trigger('reset')
   $('.failed-change').text('')
   const msg = 'Change password successful'
   const state = 'successful'
@@ -97,14 +98,19 @@ const onChangePasswordSuccess = (response) => {
 }
 
 const onChangePasswordFailure = (response) => {
-  $('#change-password-form').trigger('reset')
+  $('.change-password-form').trigger('reset')
   $('.failed-change').text('Failed to change password. Please try again.')
   $('.failed-change').addClass('failure')
 }
 
 const onCreateGameSuccess = (response) => {
+//   let gameWatcher = resourceWatcher('<server>/games/:id/watch', {
+//       Authorization: 'Token token=<token>'[,
+//       timeout: <timeout>]
+// });
   store.game = response.game
-  gamelogic.setGameBoard()
+  renderGameBoard()
+  $('.game-message').text(`New Game started. ${store.currentP.name}'s turn`)
 }
 const onCreateGameFailure = (response) => {
   const msg = 'Failed to create game'
@@ -115,10 +121,7 @@ const onCreateGameFailure = (response) => {
 
 const onUpdateGameSuccess = (response) => {
   store.game = response.game
-  gamelogic.changePlayer()
-  if (!store.game.over) {
-    $('.game-message').html(`${store.currentP.name}'s turn`)
-  }
+  renderGameBoard()
 }
 
 const onUpdateGameFailure = (response) => {
@@ -138,25 +141,90 @@ const onGetGamesFailure = (response) => {
   sysMsg(type, state, msg)
 }
 
+const onJoinGameSuccess = (response) => {
+  store.game = response.game
+  $('.join-game-form').trigger('reset')
+  const msg = `Joined game ${store.game.id}`
+  const state = 'successful'
+  const type = 'join-game-s'
+  sysMsg(type, state, msg)
+  $('.gameboard').show()
+  $('.game-options').hide()
+  renderGameBoard()
+}
+const onJoinGameFailure = (response) => {
+  $('.join-game-form').trigger('reset')
+  const msg = 'Failed to join game'
+  const state = 'failure'
+  const type = 'join-game-f'
+  sysMsg(type, state, msg)
+}
+
 const onUpdateSquare = (currentP, squareId) => {
   store.game.cells[squareId] = currentP.index
   $('#' + squareId).text(currentP.token).addClass('inactive-square')
 }
 
-const onGameOver = (winner) => {
-  $('.square').addClass('inactive-square')
-  if (winner === 'draw') {
-    $('.game-message').text(`Draw`)
+const onGameOverMsg = () => {
+  if (gamelogic.isDraw()) {
+    $('.game-message').text(`Game over. Draw game.`)
   } else {
-    store.winType.forEach(cell => {
-      $(`#${cell}`).addClass('win-square')
-    })
-    $('.game-message').text(`${winner} wins`)
+    if (store.winIndex === store.players[0].index) {
+      $('.game-message').text(`Game over. ${store.players[0].name} won.`)
+    } else {
+      $('.game-message').text(`Game over. ${store.players[1].name} won.`)
+    }
   }
 }
 
 const onInvalidSquare = () => {
   $('.game-message').text(`Square is already marked, Please choose another square.`)
+}
+
+function renderGameBoard () {
+  const cells = store.game.cells
+  const playerX = store.game.player_x.email
+  let playerO
+  if (store.game.player_o) {
+    playerO = store.game.player_o.email
+  } else {
+    playerO = 'player_o'
+  }
+
+  store.players = [{index: 'x', token: '❌', name: playerX}, {index: 'o', token: '⭕️', name: playerO}]
+  const numX = cells.filter(cell => cell === 'x').length
+  const numO = cells.filter(cell => cell === 'o').length
+  if (numX === numO) {
+    store.currentP = store.players[0]
+  } else {
+    store.currentP = store.players[1]
+  }
+  $('.game-id').text(`Current Game ID: ${store.game.id}`)
+
+  for (let i = 0; i < cells.length; i++) {
+    $('#' + i).removeClass('inactive-square win-square')
+    if (cells[i] === store.players[0].index) {
+      $('#' + i).html(store.players[0].token).addClass('inactive-square')
+    } else if (cells[i] === store.players[1].index) {
+      $('#' + i).html(store.players[1].token).addClass('inactive-square')
+    } else {
+      $('#' + i).html(' ')
+    }
+  }
+
+  if (store.game.over) {
+    for (let i = 0; i < cells.length; i++) {
+      $('#' + i).addClass('inactive-square')
+    }
+    if (gamelogic.checkWin()) {
+      store.winType.forEach(i => {
+        $('#' + i).addClass('win-square')
+      })
+    }
+    onGameOverMsg()
+  } else {
+    $('.game-message').text(`${store.currentP.name}'s turn`)
+  }
 }
 
 module.exports = {
@@ -174,7 +242,9 @@ module.exports = {
   onUpdateGameFailure,
   onGetGamesSuccess,
   onGetGamesFailure,
+  onJoinGameSuccess,
+  onJoinGameFailure,
   onUpdateSquare,
-  onGameOver,
+  onGameOverMsg,
   onInvalidSquare
 }

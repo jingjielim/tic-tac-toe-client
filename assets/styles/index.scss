@@ -15,7 +15,7 @@ body {
 }
 
 .title {
-  margin-top: 5%;
+  margin-top: 1%;
 }
 
 .message {
@@ -31,15 +31,13 @@ body {
   font-size: 4rem;
   justify-content: center;
   line-height: 70%;
-  padding: 5% 0;
+  padding: 10% 0;
   white-space: pre;
 
   &:hover {
     background-color: $square-hover-bg;
   }
 }
-
-
 
 .inactive-square {
   cursor: default;
@@ -66,6 +64,21 @@ body {
   padding-top: 10px;
 }
 
+.game-id {
+  margin: 0;
+  padding-top: 10px;
+}
+
+.game-message {
+  margin: 0;
+  padding-bottom: 5px;
+}
+
+.sys-message {
+  margin: 0;
+  padding: 0;
+}
+
 .successful {
   color: $success-color;
 }
@@ -75,7 +88,7 @@ body {
 }
 
 .gameboard {
-  max-width: 400px;
+  max-width: 350px;
   width: 70%;
 }
 

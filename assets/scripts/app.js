@@ -11,25 +11,29 @@ $(() => {
   $('#change-password-btn').hide()
   $('#sign-out').hide()
   $('#sign-up').hide()
-  $('.start-game-btn').hide()
+  $('.game-options').hide()
 
+  // Visual change actions
   $('.sign-in-btn').on('click', events.showSignIn)
   $('.sign-up-btn').on('click', events.showSignUp)
   $('#change-password-btn').on('click', events.showChangePW)
   $('.start-game-btn').on('click', events.onStartGame)
-  $('#sign-up').on('submit', events.onSignUp)
-  $('#sign-in').on('submit', events.onSignIn)
-  $('#sign-out').on('click', events.onSignOut)
-  $('#change-password').on('submit', events.onChangePassword)
-  $('#create-game').on('click', events.onCreateGame)
   $('#get-games').on('click', events.onGetGames)
-  $('.square').on('click', events.onUpdateGame)
+  $('#create-game').on('click', events.onCreateGame)
+  $('.square').on('click', events.onSquareClick)
+
+  // Form actions
+  $('.sign-up-form').on('submit', events.onSignUp)
+  $('.sign-in-form').on('submit', events.onSignIn)
+  $('#sign-out').on('click', events.onSignOut)
+  $('.change-password-form').on('submit', events.onChangePassword)
+  $('.join-game-form').on('submit', events.onJoinGame)
 
   // Development shortcut
   // $('#sign-in').hide()
   // setTimeout(() => {
   //   $('#signInEmail').val('j@e')
   //   $('#signInPassword').val('1')
-  //   $('#sign-in-form').trigger('submit')
+  //   $('.sign-in-form').trigger('submit')
   // }, 500)
 })

@@ -18,7 +18,7 @@ const showSignUp = (event) => {
 
 const onStartGame = (event) => {
   $('.gameboard').slideDown()
-  $('.start-game-btn').hide()
+  $('.game-options').hide()
   api.createGame()
     .then(ui.onCreateGameSuccess)
     .catch(ui.onCreateGameFailure)
@@ -29,7 +29,6 @@ const onSignUp = (event) => {
 
   const form = event.target
   const userData = getFormFields(form)
-  console.log(userData)
   const userPass = {
     credentials: {
       email: userData.credentials.email,
@@ -89,38 +88,39 @@ const onGetGames = (event) => {
     .catch(ui.onGetGamesFailure)
 }
 
-const onUpdateGame = (event) => {
+const onSquareClick = (event) => {
   event.preventDefault()
   const squareId = event.target.id
   const currentP = store.currentP
-  let winner = null
+  let over = false
   // Check if game is over
-  if (!store.game.over) {
-    // If square is marked
-    if (store.game.cells[squareId]) {
-      ui.onInvalidSquare()
-    } else {
-      // if square is unmarked
-      // Mark the square
-      ui.onUpdateSquare(currentP, squareId)
-      // Check if there is a winner or a draw
-      if (gamelogic.checkWin(currentP.index)) {
-        store.game.over = true
-        winner = currentP.name
-      } else if (gamelogic.isDraw()) {
-        store.game.over = true
-        winner = 'draw'
-      }
-      // Update API on game
-      api.updateGame(squareId)
-        .then(ui.onUpdateGameSuccess)
-        .catch(ui.onUpdateGameFailure)
-      // If game is over...
-      if (store.game.over) {
-        ui.onGameOver(winner)
-      }
+  if (store.game.over) {
+    ui.onGameOverMsg()
+  } else if (store.game.cells[squareId]) {
+    // Check if square already marked
+    ui.onInvalidSquare()
+  } else {
+    // if square is unmarked, mark square
+    store.game.cells[squareId] = currentP.index
+    // Check if there is a winner or a draw
+    if (gamelogic.checkWin() || gamelogic.isDraw()) {
+      over = true
     }
+    // Update API about game
+    api.updateGame(squareId, over)
+      .then(ui.onUpdateGameSuccess)
+      .catch(ui.onUpdateGameFailure)
   }
+}
+
+const onJoinGame = (event) => {
+  event.preventDefault()
+  const form = event.target
+  const game = getFormFields(form)
+  const id = Object.values(game)[0]
+  api.joinGame(id)
+    .then(ui.onJoinGameSuccess)
+    .catch(ui.onJoinGameFailure)
 }
 
 module.exports = {
@@ -133,5 +133,6 @@ module.exports = {
   onChangePassword,
   onCreateGame,
   onGetGames,
-  onUpdateGame
+  onSquareClick,
+  onJoinGame
 }
