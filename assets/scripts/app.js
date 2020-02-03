@@ -11,7 +11,7 @@ $(() => {
   $('#change-password-btn').hide()
   $('#sign-out').hide()
   $('#sign-up').hide()
-  $('.game-options').hide()
+  $('.signed-in-options').hide()
 
   // Visual change actions
   $('.sign-in-btn').on('click', events.showSignIn)
@@ -19,6 +19,7 @@ $(() => {
   $('#change-password-btn').on('click', events.showChangePW)
   $('.start-game-btn').on('click', events.onStartGame)
   $('#get-games').on('click', events.onGetGames)
+  $('.unfinished-games').on('click', events.onGetUnfinishedGames)
   $('#create-game').on('click', events.onCreateGame)
   $('.square').on('click', events.onSquareClick)
 
@@ -28,11 +29,12 @@ $(() => {
   $('#sign-out').on('click', events.onSignOut)
   $('.change-password-form').on('submit', events.onChangePassword)
   $('.join-game-form').on('submit', events.onJoinGame)
+  $('.show-game-form').on('submit', events.onGetGame)
 
   // Development shortcut
   // $('#sign-in').hide()
   // setTimeout(() => {
-  //   $('#signInEmail').val('j@e')
+  //   $('#signInEmail').val('j@eee')
   //   $('#signInPassword').val('1')
   //   $('.sign-in-form').trigger('submit')
   // }, 500)

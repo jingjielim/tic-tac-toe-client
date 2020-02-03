@@ -18,7 +18,7 @@ const showSignUp = (event) => {
 
 const onStartGame = (event) => {
   $('.gameboard').slideDown()
-  $('.game-options').hide()
+  $('.start-game-btn').hide()
   api.createGame()
     .then(ui.onCreateGameSuccess)
     .catch(ui.onCreateGameFailure)
@@ -88,6 +88,22 @@ const onGetGames = (event) => {
     .catch(ui.onGetGamesFailure)
 }
 
+const onGetUnfinishedGames = (event) => {
+  api.getUnfinishedGames()
+    .then(ui.onGetUnfinishedGamesSuccess)
+    .catch(ui.onGetUnfinishedGamesFailure)
+}
+
+const onGetGame = (event) => {
+  event.preventDefault()
+
+  const form = event.target
+  const id = getFormFields(form)
+  api.getGame(Object.values(id)[0])
+    .then(ui.onGetGameSuccess)
+    .catch(ui.onGetGameFailure)
+}
+
 const onSquareClick = (event) => {
   event.preventDefault()
   const squareId = event.target.id
@@ -113,15 +129,15 @@ const onSquareClick = (event) => {
   }
 }
 
-const onJoinGame = (event) => {
-  event.preventDefault()
-  const form = event.target
-  const game = getFormFields(form)
-  const id = Object.values(game)[0]
-  api.joinGame(id)
-    .then(ui.onJoinGameSuccess)
-    .catch(ui.onJoinGameFailure)
-}
+// const onJoinGame = (event) => {
+//   event.preventDefault()
+//   const form = event.target
+//   const game = getFormFields(form)
+//   const id = Object.values(game)[0]
+//   api.joinGame(id)
+//     .then(ui.onJoinGameSuccess)
+//     .catch(ui.onJoinGameFailure)
+// }
 
 module.exports = {
   onStartGame,
@@ -133,6 +149,8 @@ module.exports = {
   onChangePassword,
   onCreateGame,
   onGetGames,
-  onSquareClick,
-  onJoinGame
+  onGetGame,
+  onGetUnfinishedGames,
+  onSquareClick
+  // onJoinGame
 }

@@ -1,7 +1,6 @@
 'use strict'
 const store = require('../store')
 const gamelogic = require('./gamelogic')
-const resourceWatcher = require('./resourcewatcher.js')
 
 const sysMsg = (type, state, msg) => {
   $('.sys-message').append(`<p class="${type}"> ${msg}`)
@@ -37,11 +36,13 @@ const onSignInSuccess = (response) => {
   // console.log('sign in user:')
   // console.log(response)
   $('.sign-in-form').trigger('reset')
-  $('.game-options').show()
+  $('.signed-in-options').show()
   $('#change-password-btn').show()
   $('#sign-out').show()
   $('#sign-up').hide()
   $('#sign-in').hide()
+  $('.start-game-btn').show()
+
   store.user = response.user
   // api.createGame()
   //   .then(onCreateGameSuccess)
@@ -70,7 +71,7 @@ const onSignOutSuccess = (response) => {
   $('#change-password-btn').hide()
   $('#sign-out').hide()
   $('#sign-in').show()
-  $('.game-options').hide()
+  $('.signed-in-options').hide()
 
   // Delete all store items related to this session
   Object.keys(store).forEach(function (key) { delete store[key] })
@@ -104,10 +105,6 @@ const onChangePasswordFailure = (response) => {
 }
 
 const onCreateGameSuccess = (response) => {
-//   let gameWatcher = resourceWatcher('<server>/games/:id/watch', {
-//       Authorization: 'Token token=<token>'[,
-//       timeout: <timeout>]
-// });
   store.game = response.game
   renderGameBoard()
   $('.game-message').text(`New Game started. ${store.currentP.name}'s turn`)
@@ -141,24 +138,58 @@ const onGetGamesFailure = (response) => {
   sysMsg(type, state, msg)
 }
 
-const onJoinGameSuccess = (response) => {
+const onGetGameSuccess = (response) => {
   store.game = response.game
-  $('.join-game-form').trigger('reset')
-  const msg = `Joined game ${store.game.id}`
-  const state = 'successful'
-  const type = 'join-game-s'
-  sysMsg(type, state, msg)
-  $('.gameboard').show()
-  $('.game-options').hide()
+  $('.gameboard').slideDown()
+  $('.start-game-btn').hide()
   renderGameBoard()
 }
-const onJoinGameFailure = (response) => {
-  $('.join-game-form').trigger('reset')
-  const msg = 'Failed to join game'
+const onGetGameFailure = (response) => {
+  const msg = 'Game not found!'
   const state = 'failure'
-  const type = 'join-game-f'
+  const type = 'get-game-f'
   sysMsg(type, state, msg)
 }
+
+const onGetUnfinishedGamesSuccess = (response) => {
+  if (response.games.length === 0) {
+    const msg = 'No unfinished games found! Start a new game.'
+    const state = 'failure'
+    const type = 'get-unfinished-game-f'
+    sysMsg(type, state, msg)
+  } else {
+    store.game = response.games[0]
+    $('.gameboard').slideDown()
+    $('.start-game-btn').hide()
+    renderGameBoard()
+  }
+}
+
+const onGetUnfinishedGamesFailure = (response) => {
+  const msg = 'Failed to get unfinished games'
+  const state = 'failure'
+  const type = 'get-unfinished-game-f'
+  sysMsg(type, state, msg)
+}
+
+// const onJoinGameSuccess = (response) => {
+//   store.game = response.game
+//   $('.join-game-form').trigger('reset')
+//   const msg = `Joined game ${store.game.id}`
+//   const state = 'successful'
+//   const type = 'join-game-s'
+//   sysMsg(type, state, msg)
+//   $('.gameboard').show()
+//   $('.signed-in-options').hide()
+//   renderGameBoard()
+// }
+// const onJoinGameFailure = (response) => {
+//   $('.join-game-form').trigger('reset')
+//   const msg = 'Failed to join game'
+//   const state = 'failure'
+//   const type = 'join-game-f'
+//   sysMsg(type, state, msg)
+// }
 
 const onUpdateSquare = (currentP, squareId) => {
   store.game.cells[squareId] = currentP.index
@@ -242,8 +273,12 @@ module.exports = {
   onUpdateGameFailure,
   onGetGamesSuccess,
   onGetGamesFailure,
-  onJoinGameSuccess,
-  onJoinGameFailure,
+  onGetGameSuccess,
+  onGetGameFailure,
+  onGetUnfinishedGamesSuccess,
+  onGetUnfinishedGamesFailure,
+  // onJoinGameSuccess,
+  // onJoinGameFailure,
   onUpdateSquare,
   onGameOverMsg,
   onInvalidSquare

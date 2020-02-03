@@ -80,6 +80,26 @@ const getGames = () => {
   })
 }
 
+const getGame = (id) => {
+  return $.ajax({
+    url: config.apiUrl + '/games/' + id,
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
+const getUnfinishedGames = () => {
+  return $.ajax({
+    url: config.apiUrl + '/games?over=false',
+    method: 'GET',
+    headers: {
+      Authorization: 'Token token=' + store.user.token
+    }
+  })
+}
+
 const joinGame = (gameId) => {
   return $.ajax({
     url: config.apiUrl + '/games/' + gameId,
@@ -98,5 +118,7 @@ module.exports = {
   createGame,
   updateGame,
   getGames,
+  getGame,
+  getUnfinishedGames,
   joinGame
 }

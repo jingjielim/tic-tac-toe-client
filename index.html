@@ -18,18 +18,6 @@
 
       <p class="sys-message"></p>
 
-      <div class="game-options">
-        <button class="btn btn-primary start-game-btn" id='start-game'>Start game</button>
-
-        <!-- <form class='join-game-form form-inline justify-content-center game-options'>
-          <div class="form-group mx-sm-3">
-            <label for="gameId" class="sr-only">Game ID</label>
-            <input type="number" class="form-control" id="gameId" name="gameId" placeholder="Game ID">
-          </div>
-          <button type="submit" class="btn btn-primary join-game-btn mb-2">Join game</button>
-        </form> -->
-      </div>
-
       <div class="container gameboard">
         <p class="game-message"></p>
         <div class="row">
@@ -104,49 +92,58 @@
           </div>
         </div>
       </div>
+      <div class="signed-in-options">
+        <button class="btn btn-primary start-game-btn" id='start-game'>Start game</button>
+        <button class=" btn btn-primary unfinished-games">Play a random Unfinished Game</button>
 
-      <!-- Button trigger modal -->
-      <button id="change-password-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#changePWModal">
-        Change Password
-      </button>
+        <form class="show-game-form form-inline justify-content-center">
+          <div class="form-group mx-sm-3">
+            <input type="number" class="form-control" placeholder="Game ID" name='gameId'>
+          </div>
+          <button type="submit" class="btn btn-primary show-game-btn mb-2">Show game</button>
+        </form>
 
-      <!-- Modal -->
-      <div class="modal fade" id="changePWModal" tabindex="-1" role="dialog" aria-labelledby="changePWmodal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5>Change Password</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="container">
-                <div class="row justify-content-center">
-                  <p class="failed-change"></p>
-                  <div class="card-body">
-                    <form class="change-password-form">
-                        <div class="form-label-group">
-                          <input class="form-control" name="passwords[old]" type="password" placeholder="Old password" required>
-                        </div>
 
-                        <div class="form-label-group">
-                          <input type="password" id="inputPassword" name="passwords[new]" class="form-control" placeholder="New password" required>
-                        </div>
-                        <button class="btn btn-primary" type="submit">Change Password</button>
-                    </form>
+        <!-- Button trigger modal -->
+        <button id="change-password-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#changePWModal">
+          Change Password
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="changePWModal" tabindex="-1" role="dialog" aria-labelledby="changePWmodal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5>Change Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row justify-content-center">
+                    <p class="failed-change"></p>
+                    <div class="card-body">
+                      <form class="change-password-form">
+                          <div class="form-label-group">
+                            <input class="form-control" name="passwords[old]" type="password" placeholder="Old password" required>
+                          </div>
+
+                          <div class="form-label-group">
+                            <input type="password" id="inputPassword" name="passwords[new]" class="form-control" placeholder="New password" required>
+                          </div>
+                          <button class="btn btn-primary" type="submit">Change Password</button>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Change Password</button>
-            </div> -->
           </div>
         </div>
+        <button class="btn btn-primary"id="sign-out" >Sign out</button>
       </div>
-      <button class="btn btn-primary"id="sign-out" >Sign out</button>
+
 
     </body>
 </html>
