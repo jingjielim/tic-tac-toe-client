@@ -2,9 +2,8 @@
 
 const store = require('../store')
 
-function checkWin () {
+function checkWin (cells) {
   let win = false
-  const cells = store.game.cells
   let currentWinType = 0
   const winTypes = [
     [cells[0], cells[1], cells[2]],
@@ -63,10 +62,9 @@ function checkWin () {
   return win
 }
 
-function isDraw () {
-  const cells = store.game.cells
+function isDraw (cells) {
   // true if every cell is fill. false if any cell is empty
-  return cells.every(cell => cell) && !checkWin()
+  return cells.every(cell => cell) && !checkWin(cells)
 }
 
 // function changePlayer () {

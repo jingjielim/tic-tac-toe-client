@@ -139,12 +139,14 @@ const onGetGamesFailure = (response) => {
 }
 
 const onGetGameSuccess = (response) => {
+  $('.show-game-form').trigger('reset')
   store.game = response.game
   $('.gameboard').slideDown()
   $('.start-game-btn').hide()
   renderGameBoard()
 }
 const onGetGameFailure = (response) => {
+  $('.show-game-form').trigger('reset')
   const msg = 'Game not found!'
   const state = 'failure'
   const type = 'get-game-f'
@@ -197,7 +199,7 @@ const onUpdateSquare = (currentP, squareId) => {
 }
 
 const onGameOverMsg = () => {
-  if (gamelogic.isDraw()) {
+  if (gamelogic.isDraw(store.game.cells)) {
     $('.game-message').text(`Game over. Draw game.`)
   } else {
     if (store.winIndex === store.players[0].index) {
@@ -247,7 +249,7 @@ function renderGameBoard () {
     for (let i = 0; i < cells.length; i++) {
       $('#' + i).addClass('inactive-square')
     }
-    if (gamelogic.checkWin()) {
+    if (gamelogic.checkWin(cells)) {
       store.winType.forEach(i => {
         $('#' + i).addClass('win-square')
       })
