@@ -143,6 +143,9 @@ const onGetGameSuccess = (response) => {
   store.game = response.game
   $('.gameboard').slideDown()
   $('#start-game').hide()
+  store.AI = false
+  $('#self-game').hide()
+  $('#computer-game').show()
   renderGameBoard()
 }
 const onGetGameFailure = (response) => {
