@@ -83,3 +83,15 @@ For unexpected events, console logs were added to the code in the suspected area
 >Two or more modules directly or indrectly depending on each causing unwanted effects. 
 
 I encountered this issue when trying to get the ui to trigger events through the events.js page. Because both files were depending on each other the event did not trigger.
+
+## Additional Features
+
+### Ability to play incomplete games
+Players are able to click on the 'Get incomplete games' button to load a list of incomplete games.
+
+Players can choose from dropdown list of all incomplete games, then click play game to load and play the selected game.
+
+### Future improvements
+
+- AI player
+- Multiplayer

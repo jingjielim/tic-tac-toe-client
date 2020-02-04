@@ -142,7 +142,7 @@ const onGetGameSuccess = (response) => {
   $('.show-game-form').trigger('reset')
   store.game = response.game
   $('.gameboard').slideDown()
-  $('.start-game-btn').hide()
+  $('#start-game').hide()
   renderGameBoard()
 }
 const onGetGameFailure = (response) => {
@@ -160,10 +160,16 @@ const onGetUnfinishedGamesSuccess = (response) => {
     const type = 'get-unfinished-game-f'
     sysMsg(type, state, msg)
   } else {
-    store.game = response.games[0]
-    $('.gameboard').slideDown()
-    $('.start-game-btn').hide()
-    renderGameBoard()
+    store.unfinishedgames = []
+    response.games.forEach(game => store.unfinishedgames.push(game.id))
+    console.log(store.unfinishedgames)
+    let games = ''
+    store.unfinishedgames.forEach(game => {
+      games += `<option value="${game}">${game}</option>`
+    })
+    $('#unfinished-game').append(games)
+    $('.unfinished-games').hide()
+    $('.show-game-form').show()
   }
 }
 
@@ -220,8 +226,10 @@ function renderGameBoard () {
   let playerO
   if (store.game.player_o) {
     playerO = store.game.player_o.email
+  } else if (store.AI) {
+    playerO = 'Computer'
   } else {
-    playerO = 'player_o'
+    playerO = 'Player O'
   }
 
   store.players = [{index: 'x', token: '❌', name: playerX}, {index: 'o', token: '⭕️', name: playerO}]
@@ -255,8 +263,10 @@ function renderGameBoard () {
       })
     }
     onGameOverMsg()
+    $('.unfinished-games').show()
+    $('.show-game-form').hide()
   } else {
-    $('.game-message').text(`${store.currentP.name}'s turn`)
+    $('.game-message').html(`${store.currentP.name}'s turn`)
   }
 }
 

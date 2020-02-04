@@ -67,6 +67,12 @@ function isDraw (cells) {
   return cells.every(cell => cell) && !checkWin(cells)
 }
 
+// function bestMove () {
+//   const cells = store.game.cells
+//
+//   return
+// }
+
 // function changePlayer () {
 //   if (store.currentP === store.players[0]) {
 //     store.currentP = store.players[1]
@@ -78,4 +84,5 @@ function isDraw (cells) {
 module.exports = {
   checkWin,
   isDraw
+  // bestMove
 }

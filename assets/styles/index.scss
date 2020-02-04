@@ -89,7 +89,7 @@ body {
 }
 
 .container {
-  max-width: 400px;
+  max-width: 350px;
   width: 80%;
 }
 
@@ -145,4 +145,13 @@ body {
     background-color: $btn-hover-color;
     box-shadow: 0 0 0 .2rem $btn-color;
   }
+}
+
+.custom-select {
+  margin-top: 10px;
+}
+
+.input-group {
+  margin: 0 auto;
+  max-width: 200px;
 }

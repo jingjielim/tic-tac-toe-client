@@ -17,8 +17,9 @@ const showSignUp = (event) => {
 }
 
 const onStartGame = (event) => {
+  console.log(event.target.id)
   $('.gameboard').slideDown()
-  $('.start-game-btn').hide()
+  $('#start-game').hide()
   api.createGame()
     .then(ui.onCreateGameSuccess)
     .catch(ui.onCreateGameFailure)
@@ -99,6 +100,7 @@ const onGetGame = (event) => {
 
   const form = event.target
   const id = getFormFields(form)
+
   api.getGame(Object.values(id)[0])
     .then(ui.onGetGameSuccess)
     .catch(ui.onGetGameFailure)
@@ -129,6 +131,30 @@ const onSquareClick = (event) => {
   }
 }
 
+const onSelfGame = (event) => {
+  store.AI = false
+  $('#self-game').hide()
+  $('#computer-game').show()
+}
+const onComputerGame = (event) => {
+  store.AI = true
+  $('#self-game').show()
+  $('#computer-game').hide()
+}
+
+// const onGameMessageChange = (mutationsList) => {
+//   // Use traditional 'for loops' for IE 11
+//   for (const mutation of mutationsList) {
+//     if (mutation.type === 'childList') {
+//       if (store.currentP.name === 'Computer') {
+//         setTimeout(() => {
+//           const bestMove = gamelogic.bestMove()
+//           $(`#${bestMove}`).trigger('click')
+//         }, 1000)
+//       }
+//     }
+//   }
+// }
 // const onJoinGame = (event) => {
 //   event.preventDefault()
 //   const form = event.target
@@ -151,6 +177,9 @@ module.exports = {
   onGetGames,
   onGetGame,
   onGetUnfinishedGames,
-  onSquareClick
+  onSquareClick,
+  onSelfGame,
+  onComputerGame
+  // onGameMessageChange
   // onJoinGame
 }

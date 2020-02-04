@@ -15,11 +15,11 @@
     </head>
     <body class="text-center">
       <h1 class="title">TIC TAC TOE</h1>
-
+      <!-- Auth messages -->
       <p class="sys-message"></p>
-
+      <!-- Gameboard with reset and get games button -->
       <div class="gameboard">
-        <p class="game-message"></p>
+        <p class="game-message" id="game-message"></p>
         <div class="container board">
           <div class="row">
             <div class="col-4 square border-bottom border-right" id="0"> </div>
@@ -36,8 +36,12 @@
 
         <p class="game-id"></p>
         <p class='games-played'></p>
-        <button class="btn btn-primary btn-sm game-btn" id='create-game'>Reset game</button>
+        <button class="btn btn-primary btn-sm start-game-btn" id='reset-game'>Reset game</button>
+        <button class="btn btn-primary btn-sm" id='computer-game'>Play with AI</button>
+        <button class="btn btn-primary btn-sm" id='self-game'>Play with self</button>
         <button class="btn btn-primary btn-sm game-btn" id='get-games'>Get games played</button>
+
+        <!-- Form to join an existing game as Player O -->
         <!-- <form class='join-game-form form-inline justify-content-center'>
           <div class="form-group mx-sm-3">
             <input type="number" class="form-control" name="gameId" placeholder="Game ID">
@@ -45,8 +49,7 @@
           <button type="submit" class="btn btn-primary join-game-btn mb-2">Join game</button>
         </form> -->
       </div>
-      <!-- Form to join an existing game as Player O -->
-
+      <!-- Sign in and Sign up forms -->
       <div class="container">
         <div class="row justify-content-center">
           <div class="card" id='sign-up'>
@@ -95,16 +98,27 @@
           </div>
         </div>
       </div>
+      <!-- Signed in options -->
       <div class="signed-in-options container">
         <button class="btn btn-primary btn-sm start-game-btn" id='start-game'>Start game</button>
-        <button class="btn btn-primary btn-sm unfinished-games">Play a random Unfinished Game</button>
+        <button class="btn btn-primary btn-sm unfinished-games">Get incomplete Games</button>
 
-        <form class="show-game-form form-inline justify-content-center">
+        <form class="show-game-form">
+          <div class="input-group input-group-sm unfinished-game">
+            <select class="custom-select" id="unfinished-game" name="gameId">
+              <option selected>Game ID</option>
+            </select>
+            <div class="input-group-append">
+              <button class="btn btn-primary show-game-btn" type="submit">Play Game</button>
+            </div>
+          </div>
+        </form>
+        <!--<form class="show-game-form">
           <div class="input-group input-group-sm mr-1 mt-1 w-50" >
             <input type="number" class="form-control w-50" placeholder="Game ID" name='gameId'>
           </div>
           <button type="submit" class="btn btn-primary btn-sm show-game-btn mb-2">Show game</button>
-        </form>
+        </form> -->
 
 
         <!-- Button trigger modal -->
