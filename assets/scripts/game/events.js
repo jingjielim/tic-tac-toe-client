@@ -107,7 +107,6 @@ const onGetGame = (event) => {
 const onSquareClick = (event) => {
   event.preventDefault()
   const squareId = event.target.id
-  const currentP = store.currentP
   let over = false
   // Check if game is over
   if (store.game.over) {
@@ -117,7 +116,7 @@ const onSquareClick = (event) => {
     ui.onInvalidSquare()
   } else {
     // if square is unmarked, mark square
-    store.game.cells[squareId] = currentP.index
+    // store.game.cells[squareId] = currentP.index
     // Check if there is a winner or a draw
     if (gamelogic.checkWin() || gamelogic.isDraw()) {
       over = true
