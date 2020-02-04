@@ -38,12 +38,12 @@ $(() => {
   $('#computer-game').on('click', events.onComputerGame)
 
   // Development shortcut
-  $('#sign-in').hide()
-  setTimeout(() => {
-    $('#signInEmail').val('j@eee')
-    $('#signInPassword').val('1')
-    $('.sign-in-form').trigger('submit')
-  }, 500)
+  // $('#sign-in').hide()
+  // setTimeout(() => {
+  //   $('#signInEmail').val('j@eee')
+  //   $('#signInPassword').val('1')
+  //   $('.sign-in-form').trigger('submit')
+  // }, 500)
 
   const targetNode = document.getElementById('game-message')
 
