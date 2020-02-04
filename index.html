@@ -18,23 +18,26 @@
 
       <p class="sys-message"></p>
 
-      <div class="container gameboard">
+      <div class="gameboard">
         <p class="game-message"></p>
-        <div class="row">
-          <div class="col-4 square border-bottom border-right" id="0"> </div>
-          <div class="col-4 square border-bottom" id="1"> </div>
-          <div class="col-4 square border-bottom border-left" id="2"> </div>
-          <div class="col-4 square border-right" id="3"> </div>
-          <div class="col-4 square" id="4"> </div>
-          <div class="col-4 square border-left" id="5"> </div>
-          <div class="col-4 square border-top border-right" id="6"> </div>
-          <div class="col-4 square border-top" id="7"> </div>
+        <div class="container board">
+          <div class="row">
+            <div class="col-4 square border-bottom border-right" id="0"> </div>
+            <div class="col-4 square border-bottom" id="1"> </div>
+            <div class="col-4 square border-bottom border-left" id="2"> </div>
+            <div class="col-4 square border-right" id="3"> </div>
+            <div class="col-4 square" id="4"> </div>
+            <div class="col-4 square border-left" id="5"> </div>
+            <div class="col-4 square border-top border-right" id="6"> </div>
+            <div class="col-4 square border-top" id="7"> </div>
             <div class="col-4 square border-top border-left" id="8"> </div>
+          </div>
         </div>
+
         <p class="game-id"></p>
         <p class='games-played'></p>
-        <button class="btn btn-primary game-btn" id='create-game'>Reset game</button>
-        <button class="btn btn-primary game-btn" id='get-games'>Get games played</button>
+        <button class="btn btn-primary btn-sm game-btn" id='create-game'>Reset game</button>
+        <button class="btn btn-primary btn-sm game-btn" id='get-games'>Get games played</button>
         <!-- <form class='join-game-form form-inline justify-content-center'>
           <div class="form-group mx-sm-3">
             <input type="number" class="form-control" name="gameId" placeholder="Game ID">
@@ -92,20 +95,20 @@
           </div>
         </div>
       </div>
-      <div class="signed-in-options">
-        <button class="btn btn-primary start-game-btn" id='start-game'>Start game</button>
-        <button class=" btn btn-primary unfinished-games">Play a random Unfinished Game</button>
+      <div class="signed-in-options container">
+        <button class="btn btn-primary btn-sm start-game-btn" id='start-game'>Start game</button>
+        <button class="btn btn-primary btn-sm unfinished-games">Play a random Unfinished Game</button>
 
         <form class="show-game-form form-inline justify-content-center">
-          <div class="form-group mx-sm-3">
-            <input type="number" class="form-control" placeholder="Game ID" name='gameId'>
+          <div class="input-group input-group-sm mr-1 mt-1 w-50" >
+            <input type="number" class="form-control w-50" placeholder="Game ID" name='gameId'>
           </div>
-          <button type="submit" class="btn btn-primary show-game-btn mb-2">Show game</button>
+          <button type="submit" class="btn btn-primary btn-sm show-game-btn mb-2">Show game</button>
         </form>
 
 
         <!-- Button trigger modal -->
-        <button id="change-password-btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#changePWModal">
+        <button id="change-password-btn" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#changePWModal">
           Change Password
         </button>
 
@@ -132,7 +135,7 @@
                           <div class="form-label-group">
                             <input type="password" id="inputPassword" name="passwords[new]" class="form-control" placeholder="New password" required>
                           </div>
-                          <button class="btn btn-primary" type="submit">Change Password</button>
+                          <button class="btn btn-primary btn-sm" type="submit">Change Password</button>
                       </form>
                     </div>
                   </div>
@@ -141,7 +144,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-primary"id="sign-out" >Sign out</button>
+        <button class="btn btn-primary btn-sm"id="sign-out" >Sign out</button>
       </div>
 
 

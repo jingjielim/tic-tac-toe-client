@@ -26,12 +26,13 @@ body {
 .square {
   align-items: center;
   background-color: $square-bg;
-  border: $border-color;
   cursor: pointer;
-  font-size: 4rem;
+  display: flex;
+  font-size: 3rem;
+  height: 33.33%;
   justify-content: center;
-  line-height: 70%;
-  padding: 10% 0;
+  line-height: 100%;
+  padding: 0;
   white-space: pre;
 
   &:hover {
@@ -87,9 +88,18 @@ body {
   color: $failure-color;
 }
 
-.gameboard {
-  max-width: 350px;
-  width: 70%;
+.container {
+  max-width: 400px;
+  width: 80%;
+}
+
+.board {
+  display: grid;
+  height: 50vh;
+  max-height: 80vw;
+  max-width: 80%;
+  padding: 0;
+  width: 50vh;
 }
 
 .form-label-group {
