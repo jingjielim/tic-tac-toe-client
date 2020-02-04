@@ -135,26 +135,32 @@ const onSelfGame = (event) => {
   store.AI = false
   $('#self-game').hide()
   $('#computer-game').show()
+  api.createGame()
+    .then(ui.onCreateGameSuccess)
+    .catch(ui.onCreateGameFailure)
 }
 const onComputerGame = (event) => {
   store.AI = true
   $('#self-game').show()
   $('#computer-game').hide()
+  api.createGame()
+    .then(ui.onCreateGameSuccess)
+    .catch(ui.onCreateGameFailure)
 }
 
-// const onGameMessageChange = (mutationsList) => {
-//   // Use traditional 'for loops' for IE 11
-//   for (const mutation of mutationsList) {
-//     if (mutation.type === 'childList') {
-//       if (store.currentP.name === 'Computer') {
-//         setTimeout(() => {
-//           const bestMove = gamelogic.bestMove()
-//           $(`#${bestMove}`).trigger('click')
-//         }, 1000)
-//       }
-//     }
-//   }
-// }
+const onGameMessageChange = (mutationsList) => {
+  // Use traditional 'for loops' for IE 11
+  for (const mutation of mutationsList) {
+    if (mutation.type === 'childList') {
+      if (mutation.addedNodes[0].data === "Computer's turn" && !store.game.over) {
+        setTimeout(() => {
+          const bestMove = gamelogic.bestMove()
+          $(`#${bestMove}`).trigger('click')
+        }, 1000)
+      }
+    }
+  }
+}
 // const onJoinGame = (event) => {
 //   event.preventDefault()
 //   const form = event.target
@@ -179,7 +185,7 @@ module.exports = {
   onGetUnfinishedGames,
   onSquareClick,
   onSelfGame,
-  onComputerGame
-  // onGameMessageChange
+  onComputerGame,
+  onGameMessageChange
   // onJoinGame
 }

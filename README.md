@@ -1,6 +1,6 @@
 # Tic Tac Toe
 
-An implementation of the age old game of Tic Tac Toe.
+An implementation of the age old game of Tic Tac Toe. An implmentation of a perfect AI using Minimax algorithm in Game Theory is included.
 
 
 ### Technologies
@@ -91,7 +91,12 @@ Players are able to click on the 'Get incomplete games' button to load a list of
 
 Players can choose from dropdown list of all incomplete games, then click play game to load and play the selected game.
 
+### Implementation of an AI using Minimax Algorithm
+
+Players are able to play against a perfect AI instead. AI is implemented using the Minimax Algorithm in Game Theory.
+
+Implementation is adapted from [here](https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/).
+
 ### Future improvements
 
-- AI player
 - Multiplayer

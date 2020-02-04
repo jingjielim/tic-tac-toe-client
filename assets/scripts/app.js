@@ -38,21 +38,21 @@ $(() => {
   $('#computer-game').on('click', events.onComputerGame)
 
   // Development shortcut
-  // $('#sign-in').hide()
-  // setTimeout(() => {
-  //   $('#signInEmail').val('j@eee')
-  //   $('#signInPassword').val('1')
-  //   $('.sign-in-form').trigger('submit')
-  // }, 500)
+  $('#sign-in').hide()
+  setTimeout(() => {
+    $('#signInEmail').val('j@eee')
+    $('#signInPassword').val('1')
+    $('.sign-in-form').trigger('submit')
+  }, 500)
 
-  // const targetNode = document.getElementById('game-message')
-  //
-  // // Options for the observer (which mutations to observe)
-  // const config = { childList: true }
-  //
-  // // Create an observer instance linked to the callback function
-  // const observer = new MutationObserver(events.onGameMessageChange)
-  //
-  // // Start observing the target node for configured mutations
-  // observer.observe(targetNode, config)
+  const targetNode = document.getElementById('game-message')
+
+  // Options for the observer (which mutations to observe)
+  const config = { childList: true }
+
+  // Create an observer instance linked to the callback function
+  const observer = new MutationObserver(events.onGameMessageChange)
+
+  // Start observing the target node for configured mutations
+  observer.observe(targetNode, config)
 })

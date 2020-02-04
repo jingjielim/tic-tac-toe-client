@@ -107,7 +107,7 @@ const onChangePasswordFailure = (response) => {
 const onCreateGameSuccess = (response) => {
   store.game = response.game
   renderGameBoard()
-  $('.game-message').text(`New Game started. ${store.currentP.name}'s turn`)
+  $('.game-message').html(`New Game started. ${store.currentP.name}'s turn`)
 }
 const onCreateGameFailure = (response) => {
   const msg = 'Failed to create game'
@@ -129,7 +129,7 @@ const onUpdateGameFailure = (response) => {
 }
 
 const onGetGamesSuccess = (response) => {
-  $('.games-played').text(`Total games played: ${response.games.length}`)
+  $('.games-played').html(`Total games played: ${response.games.length}`)
 }
 const onGetGamesFailure = (response) => {
   const msg = 'Failed to get games'
@@ -163,10 +163,11 @@ const onGetUnfinishedGamesSuccess = (response) => {
     store.unfinishedgames = []
     response.games.forEach(game => store.unfinishedgames.push(game.id))
     console.log(store.unfinishedgames)
-    let games = ''
+    let games = '<option selected>Game ID</option>'
     store.unfinishedgames.forEach(game => {
       games += `<option value="${game}">${game}</option>`
     })
+    $('#unfinished-game').empty()
     $('#unfinished-game').append(games)
     $('.unfinished-games').hide()
     $('.show-game-form').show()
@@ -206,18 +207,18 @@ const onUpdateSquare = (currentP, squareId) => {
 
 const onGameOverMsg = () => {
   if (gamelogic.isDraw(store.game.cells)) {
-    $('.game-message').text(`Game over. Draw game.`)
+    $('.game-message').html(`Game over. Draw game.`)
   } else {
     if (store.winIndex === store.players[0].index) {
-      $('.game-message').text(`Game over. ${store.players[0].name} won.`)
+      $('.game-message').html(`Game over. ${store.players[0].name} won.`)
     } else {
-      $('.game-message').text(`Game over. ${store.players[1].name} won.`)
+      $('.game-message').html(`Game over. ${store.players[1].name} won.`)
     }
   }
 }
 
 const onInvalidSquare = () => {
-  $('.game-message').text(`Square is already marked, Please choose another square.`)
+  $('.game-message').html(`Square is already marked, Please choose another square.`)
 }
 
 function renderGameBoard () {
@@ -240,7 +241,8 @@ function renderGameBoard () {
   } else {
     store.currentP = store.players[1]
   }
-  $('.game-id').text(`Current Game ID: ${store.game.id}`)
+  $('.game-id').html(`Current Game ID: ${store.game.id}`)
+  $('.opponent').html(`Playing against ${playerO}`)
 
   for (let i = 0; i < cells.length; i++) {
     $('#' + i).removeClass('inactive-square win-square')
