@@ -107,7 +107,7 @@ const onGetGame = (event) => {
 const onSquareClick = (event) => {
   event.preventDefault()
   const squareId = event.target.id
-  const cells = store.game.cells
+  const cells = store.game.cells.slice()
   let over = false
   // Check if game is over
   if (store.game.over) {
