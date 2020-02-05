@@ -7,7 +7,7 @@ const sysMsg = (type, state, msg) => {
   $(`.${type}`).addClass(`${state}`)
   setTimeout(() => {
     $(`.${type}`).remove()
-  }, 3500)
+  }, 5000)
 }
 
 const onSignUpSuccess = (response) => {
@@ -139,6 +139,16 @@ const onGetGamesFailure = (response) => {
 const onGetGameSuccess = (response) => {
   $('.show-game-form').trigger('reset')
   store.game = response.game
+  for (let i = 0; i < 9; i++) {
+    if (store.game.cells[i]) {
+      break
+    } else if (i === 8) {
+      const msg = 'Game is empty! Click on a square to start!'
+      const state = 'successful'
+      const type = 'get-game-s'
+      sysMsg(type, state, msg)
+    }
+  }
   $('.gameboard').slideDown()
   $('#start-game').hide()
   store.AI = false

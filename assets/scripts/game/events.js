@@ -156,7 +156,7 @@ const onGameMessageChange = (mutationsList) => {
         setTimeout(() => {
           const bestMove = gamelogic.findBestMove()
           $(`#${bestMove}`).trigger('click')
-        }, 1000)
+        }, 500)
       }
     }
   }
