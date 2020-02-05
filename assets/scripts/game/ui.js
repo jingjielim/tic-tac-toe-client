@@ -102,6 +102,8 @@ const onChangePasswordFailure = (response) => {
 
 const onCreateGameSuccess = (response) => {
   store.game = response.game
+  $('.unfinished-games').show()
+  $('.show-game-form').hide()
   renderGameBoard()
   $('.game-message').html(`New Game started. ${store.currentP.name}'s turn`)
 }

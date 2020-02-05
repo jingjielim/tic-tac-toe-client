@@ -107,8 +107,9 @@ const onSquareClick = (event) => {
   let over = false
   // Check if game is over
   if (store.game.over) {
-    const winStat = gamelogic.checkWin(cells)
-    ui.onGameOverMsg(winStat[1])
+    $('.game-message').html('Game Over. Please start a new game')
+    // const winStat = gamelogic.checkWin(cells)
+    // ui.onGameOverMsg(winStat[1])
   } else if (store.game.cells[squareId]) {
     // Check if square already marked
     ui.onInvalidSquare()
