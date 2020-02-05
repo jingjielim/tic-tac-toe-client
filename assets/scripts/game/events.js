@@ -7,17 +7,14 @@ const ui = require('./ui')
 const gamelogic = require('./gamelogic')
 
 const showSignIn = (event) => {
-  event.preventDefault()
   $('#sign-up').slideUp(400, 'linear', () => { $('#sign-in').slideDown(400) })
 }
 
 const showSignUp = (event) => {
-  event.preventDefault()
   $('#sign-in').slideUp(400, 'linear', () => { $('#sign-up').slideDown(400) })
 }
 
 const onStartGame = (event) => {
-  console.log(event.target.id)
   $('.gameboard').slideDown()
   $('#start-game').hide()
   api.createGame()
@@ -76,14 +73,12 @@ const onChangePassword = (event) => {
 }
 
 const onCreateGame = (event) => {
-  event.preventDefault()
   api.createGame()
     .then(ui.onCreateGameSuccess)
     .catch(ui.onCreateGameFailure)
 }
 
 const onGetGames = (event) => {
-  event.preventDefault()
   api.getGames()
     .then(ui.onGetGamesSuccess)
     .catch(ui.onGetGamesFailure)
@@ -107,13 +102,13 @@ const onGetGame = (event) => {
 }
 
 const onSquareClick = (event) => {
-  event.preventDefault()
   const squareId = event.target.id
   const cells = store.game.cells.slice()
   let over = false
   // Check if game is over
   if (store.game.over) {
-    ui.onGameOverMsg()
+    const winStat = gamelogic.checkWin(cells)
+    ui.onGameOverMsg(winStat[1])
   } else if (store.game.cells[squareId]) {
     // Check if square already marked
     ui.onInvalidSquare()
@@ -121,7 +116,7 @@ const onSquareClick = (event) => {
     // if square is unmarked, mark square
     cells[squareId] = store.currentP.index
     // Check if there is a winner or a draw
-    if (gamelogic.checkWin(cells) || gamelogic.isDraw(cells)) {
+    if (gamelogic.checkWin(cells)[0] || gamelogic.isDraw(cells)) {
       over = true
     }
     // Update API about game
@@ -149,18 +144,23 @@ const onComputerGame = (event) => {
 }
 
 const onGameMessageChange = (mutationsList) => {
-  // Use traditional 'for loops' for IE 11
+  // Check through the Mutation List
   for (const mutation of mutationsList) {
+    // If the change is due to the childList...
     if (mutation.type === 'childList') {
+      // If it's Computer's turn and the game is not over...
       if (mutation.addedNodes[0].data === "Computer's turn" && !store.game.over) {
+        // Set a timeout to make it seem like the computer is thinking
+        // Otherwise response is almost instant
         setTimeout(() => {
-          const bestMove = gamelogic.bestMove()
+          const bestMove = gamelogic.findBestMove()
           $(`#${bestMove}`).trigger('click')
         }, 1000)
       }
     }
   }
 }
+
 // const onJoinGame = (event) => {
 //   event.preventDefault()
 //   const form = event.target

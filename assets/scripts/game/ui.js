@@ -11,8 +11,6 @@ const sysMsg = (type, state, msg) => {
 }
 
 const onSignUpSuccess = (response) => {
-  // console.log('sign up user')
-  // console.log(response)
   $('.sign-up-form').trigger('reset')
   const msg = `Sign up successful for ${response.user.email}`
   const type = 'sign-up-s'
@@ -33,8 +31,6 @@ const onSignUpFailure = (response) => {
 }
 
 const onSignInSuccess = (response) => {
-  // console.log('sign in user:')
-  // console.log(response)
   $('.sign-in-form').trigger('reset')
   $('.signed-in-options').show()
   $('#change-password-btn').show()
@@ -165,7 +161,6 @@ const onGetUnfinishedGamesSuccess = (response) => {
   } else {
     store.unfinishedgames = []
     response.games.forEach(game => store.unfinishedgames.push(game.id))
-    console.log(store.unfinishedgames)
     let games = '<option selected>Game ID</option>'
     store.unfinishedgames.forEach(game => {
       games += `<option value="${game}">${game}</option>`
@@ -208,15 +203,13 @@ const onUpdateSquare = (currentP, squareId) => {
   $('#' + squareId).text(currentP.token).addClass('inactive-square')
 }
 
-const onGameOverMsg = () => {
-  if (gamelogic.isDraw(store.game.cells)) {
-    $('.game-message').html(`Game over. Draw game.`)
+const onGameOverMsg = (winIndex) => {
+  if (winIndex === store.players[0].index) {
+    $('.game-message').html(`Game over. ${store.players[0].name} won.`)
+  } else if (winIndex === store.players[1].index) {
+    $('.game-message').html(`Game over. ${store.players[1].name} won.`)
   } else {
-    if (store.winIndex === store.players[0].index) {
-      $('.game-message').html(`Game over. ${store.players[0].name} won.`)
-    } else {
-      $('.game-message').html(`Game over. ${store.players[1].name} won.`)
-    }
+    $('.game-message').html(`Game over. Draw game.`)
   }
 }
 
@@ -262,12 +255,13 @@ function renderGameBoard () {
     for (let i = 0; i < cells.length; i++) {
       $('#' + i).addClass('inactive-square')
     }
-    if (gamelogic.checkWin(cells)) {
-      store.winType.forEach(i => {
+    const winStat = gamelogic.checkWin(cells)
+    if (winStat[0]) {
+      winStat[2].forEach(i => {
         $('#' + i).addClass('win-square')
       })
     }
-    onGameOverMsg()
+    onGameOverMsg(winStat[1])
     $('.unfinished-games').show()
     $('.show-game-form').hide()
   } else {

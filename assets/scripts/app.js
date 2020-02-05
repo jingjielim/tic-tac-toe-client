@@ -22,7 +22,6 @@ $(() => {
   $('.start-game-btn').on('click', events.onStartGame)
   $('#get-games').on('click', events.onGetGames)
   $('.unfinished-games').on('click', events.onGetUnfinishedGames)
-  // $('#create-game').on('click', events.onCreateGame)
   $('.square').on('click', events.onSquareClick)
 
   // Form actions
@@ -37,6 +36,15 @@ $(() => {
   $('#self-game').on('click', events.onSelfGame)
   $('#computer-game').on('click', events.onComputerGame)
 
+  // AI Mutation Observer
+  // Target changes to the game-message's html (childList)
+  const targetNode = document.getElementById('game-message')
+  const config = { childList: true }
+  // Make a new observer with a callback that handles everytime the node mutates
+  const observer = new MutationObserver(events.onGameMessageChange)
+  // Start observing the target node for configured mutations
+  observer.observe(targetNode, config)
+
   // Development shortcut
   // $('#sign-in').hide()
   // setTimeout(() => {
@@ -44,15 +52,4 @@ $(() => {
   //   $('#signInPassword').val('1')
   //   $('.sign-in-form').trigger('submit')
   // }, 500)
-
-  const targetNode = document.getElementById('game-message')
-
-  // Options for the observer (which mutations to observe)
-  const config = { childList: true }
-
-  // Create an observer instance linked to the callback function
-  const observer = new MutationObserver(events.onGameMessageChange)
-
-  // Start observing the target node for configured mutations
-  observer.observe(targetNode, config)
 })
