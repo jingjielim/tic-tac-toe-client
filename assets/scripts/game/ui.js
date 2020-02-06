@@ -116,6 +116,7 @@ const onCreateGameFailure = (response) => {
 
 const onUpdateGameSuccess = (response) => {
   store.game = response.game
+  store.isComputerTurn = false
   renderGameBoard()
 }
 
@@ -249,6 +250,7 @@ function renderGameBoard () {
   } else {
     store.currentP = store.players[1]
   }
+
   $('.game-id').html(`Current Game ID: ${store.game.id}`)
   $('.opponent').html(`Playing against ${playerO}`)
 

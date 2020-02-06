@@ -103,6 +103,11 @@ const onGetGame = (event) => {
 
 const onSquareClick = (event) => {
   const squareId = event.target.id
+  if (!store.isComputerTurn) {
+    onPlaceSquare(squareId)
+  }
+}
+const onPlaceSquare = (squareId) => {
   const cells = store.game.cells.slice()
   let over = false
   // Check if game is over
@@ -153,9 +158,10 @@ const onGameMessageChange = (mutationsList) => {
       if (mutation.addedNodes[0].data === "Computer's turn" && !store.game.over) {
         // Set a timeout to make it seem like the computer is thinking
         // Otherwise response is almost instant
+        store.isComputerTurn = true
         setTimeout(() => {
           const bestMove = gamelogic.findBestMove()
-          $(`#${bestMove}`).trigger('click')
+          onPlaceSquare(bestMove)
         }, 500)
       }
     }
