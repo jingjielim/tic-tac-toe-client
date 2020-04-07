@@ -157,3 +157,17 @@ body {
   margin: 0 auto;
   max-width: 200px;
 }
+
+.thumbnail {
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+.footer {
+  position: absolute;
+  z-index: 5;
+  bottom: 5px;
+  width: 100%;
+  margin: auto;
+}

@@ -36,6 +36,10 @@ $(() => {
   $('#self-game').on('click', events.onSelfGame)
   $('#computer-game').on('click', events.onComputerGame)
 
+  // Footer actions
+  const today = new Date()
+  const year = today.getFullYear()
+  $('.footer').html(`<a class='text-muted' href='https://jingjielim.com/'>Jing Jie Lim</a> © ${year}`)
   // AI Mutation Observer
   // Target changes to the game-message's html (childList)
   const targetNode = document.getElementById('game-message')
